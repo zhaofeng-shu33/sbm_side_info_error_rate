@@ -173,7 +173,6 @@ This information theoretic quantity can be written as:
 \begin{equation}
 D_{1/2}(p_0 || p_1) = -2\log(\sum_{x \in \mathcal{X}} \sqrt{p_0(x)p_1(x)} )
 \end{equation}
-which is a special case for Rényi divergence between distribution $P$ and $Q$ of order $\alpha$: $D_{\alpha}(P||Q) = \frac{1}{\alpha - 1} \log \sum_{x\in \mathcal{X}} P^{\alpha}(x)Q^{1-\alpha}(x) $.
 
 With node observations, we divide our discussion into two cases:
 \begin{enumerate}
@@ -194,11 +193,12 @@ When $\gamma=0$, Theorem \ref{thm:constant} says $D_{1/2}(\Bern(p)||\Bern(q))$
 is the error exponent for exact recovery. Since weak recovery differs from exact recovery by a polynomial factor, $D_{1/2}(\Bern(p)||\Bern(q))$ is also the exponent for weak recovery, which has been obtained
 in \cite{zhang2016}.
 Besides, assuming $\gamma$ is an integer, the error exponent can be regarded as the Rényi divergence between the joint distribution
-$\underbrace{p_0\times p_0}_{\gamma} \times \Bern(p)$ and $p_1 \times \Bern(q)$. By independent conditions, we can decompose the
+$\underbrace{p_0\times \dots \times p_0}_{\gamma} \times \Bern(p)$ and $\underbrace{p_1\times \dots \times p_1}_{\gamma} \times \Bern(q)$. By independent conditions, we can decompose the
 divergence in the summation form.
 Furthermore, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
 
-In the above we have discussed the dense graph while the result for the sparse graph
+In the above we have discussed the dense graph,
+while the result for the sparse graph
 is summarized
 in the following theorem:
 \begin{theorem}\label{thm:Pe}
@@ -214,8 +214,8 @@ P_e \leq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2
 \end{equation}
 If the following condition
 \begin{align}
-&(\sqrt{a}-\sqrt{b})^2-2 + 2\gamma \min \{D_{\frac{2}{3}}(p_0||p_1), D_{\frac{2}{3}}(p_1||p_0) \} \notag \\
-&> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2 + 2\gamma D_{1/2}(p_0||p_1)\label{eq:oneC}
+(\sqrt{a}-\sqrt{b})^2-2 
+> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2\label{eq:oneC}
 \end{align}
 is satisfied, then we can show that $P_e$ is lower bounded by
 \begin{equation}\label{eq:PeMainL}
@@ -228,14 +228,16 @@ Under some parameter configurations specified in \eqref{eq:oneC},
 the quantity $\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2$
 exactly describes the error rate for the exact recovery problem of SBMSI.
 
+We mention that \eqref{eq:oneC} is satisfied
+when the difference between $a$ 
+and $b$ is large. It is a slightly stronger condition
+than $\sqrt{a}-\sqrt{b} > \sqrt{2}$.
+
 In addition, when $p_0=p_1$,
 Theorem \ref{thm:Pe} gives the error rate of maximum likelihood for SSBM. This corollary is
 summarized as follows:
 \begin{corollary}
-If the condition
-\begin{equation}
-(\sqrt{a}-\sqrt{b})^2-2 > 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2
-\end{equation}
+If the equation \ref{eq:oneC}
 is satisfied,
  and we consider $\SSBM(n,\frac{a\log n}{n}, \frac{b \log n}{n})$. For ML algorithms, the exact recovery error rate $P_e$ satisfies
 \begin{equation}\label{eq:cor}
@@ -352,6 +354,25 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	& = \exp(-\log n (\gamma D_{1/2}(P_0||P_1) + (\sqrt{a} - \sqrt{b})^2+ o(1))).
 	\end{align*}
 \end{proof}
+\begin{lemma}
+	Let $p_0,p_1$ be two probability distributions defined on alphabet $\mathcal{X}$,
+	then the following inequality holds
+	\begin{equation}\label{eq:32}
+		(\sum_{x\in \mathcal{X}} p^{\frac{1}{3}}_0(x) p^{\frac{2}{3}}_1(x))^3
+		\leq (\sum_{x\in \mathcal{X}} p^{\frac{1}{2}}_0(x) p^{\frac{1}{2}}_1(x))^2
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	Let $f(x)=p^{\frac{1}{3}}_0(x)p^{\frac{1}{3}}_1(x)$, $g(x) = p^{\frac{1}{3}}_1(x)$,
+	$p=\frac{3}{2}, q=3$. We can verify $\frac{1}{p} + \frac{1}{q}=1$.
+	By Hölder's inequality:
+	\begin{equation}\label{eq:holder}
+		(\sum_{x\in\mathcal{X}}f(x)g(x))\leq (\sum_{x\in\mathcal{X}} f^p(x))^{\frac{1}{p}}
+		(\sum_{x\in\mathcal{X}} g^q(x))^{\frac{1}{q}}
+	\end{equation}
+	Since $\sum_{x\in\mathcal{X}} p_1(x)=1$, \eqref{eq:holder} implies
+	\eqref{eq:32}.
+\end{proof}
 \begin{proof}[Proof of Theorem \ref{thm:Pe}]
 Below we use Chernoff inequality to give an upper bound of \eqref{eq:ein}:
 $P(A) \leq n^{-k\theta^*_k}$ where $\theta^*_k=\gamma D_{1/2}(p_0||p_1)+(1-\frac{2k}{n})(\sqrt{a}-\sqrt{b})^2$.
@@ -408,7 +429,9 @@ A_{ijrs}: &\, 2\sum_{i=1}^m  \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
 \end{align}
 Using Chernoff inequality, we can write an upper bound of $P(A_{ijrs})$ as
 \begin{align*}
-&P(A_{ijrs}) \leq  (\sum_{x\in \mathcal{X}} p_0^{1-2s}p_1^{2s})^m (\sum_{x\in \mathcal{X}} p_1^{1-s}p_0^{s})^{2m} \cdot \\
+&P(A_{ijrs}) \leq
+(\sum_{x\in \mathcal{X}} p_0^{1-2s}p_1^{2s})^m
+(\sum_{x\in \mathcal{X}} p_1^{1-s}p_0^{s})^{2m} \cdot \\
 &\exp(\log n (-\frac{3}{2}(a+b)+a\exp(-s\log \frac{a}{b})+b\exp(s\log \frac{a}{b}) \\
 &+ \frac{a}{2}\exp(-2s\log \frac{a}{b})+\frac{b}{2}\exp(2s\log \frac{a}{b})))
 \end{align*}
@@ -416,7 +439,7 @@ Let $s=\frac{1}{3}$. We then have
 \begin{align*}
 P(A_{ijrs})\leq & (\sum_{x\in \mathcal{X}} p_0^{1/3}(x)p_1^{2/3}(x))^{3m}\\
 & \cdot \exp(\frac{3}{2}\log n (-a-b+a^{1/3}b^{2/3}+a^{2/3}b^{1/3})) \\
-=&  \exp(-\log n(\gamma D_{2/3}(p_1 || p_0) \\
+\leq &  \exp(-\log n(\gamma D_{1/2}(p_1 || p_0) \\
 &+ \frac{3}{2} (a+b-a^{1/3}b^{2/3}-a^{2/3}b^{1/3})))
 \end{align*}
 From the condition mentioned in \eqref{eq:oneC},
