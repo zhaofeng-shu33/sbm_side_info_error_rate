@@ -189,8 +189,8 @@ D_{1/2}(p_0 || p_1) = -2\log(\sum_{x \in \mathcal{X}} \sqrt{p_0(x)p_1(x)} )
 
 With node observations, we divide our discussion into two cases:
 \begin{enumerate}
-\item $p,q$ are constant values;
-\item $p = a \log n /n$ and $q = b \log n / n$.
+	\item dense SBMSI: $p,q$ are constant values;
+\item sparse SBMSI: $p = a \log n /n$ and $q = b \log n / n$.
 \end{enumerate}
 The recovery error rate for the first case is given in Section \ref{sec:ee} while
 the latter case is analyzed in Section \ref{sec:ees}.
@@ -212,16 +212,22 @@ divergence in the summation form.
 Furthermore, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
 
 \subsection{Proof of Theorem \ref{thm:constant}}
-We introduce some additional notations used throught this proof: $|A|, A^c$ is the cardinality, complement of the set $A$;
-$D(p_0 || p_1)$ is the Kullback-Leibler divergence for distribution $p_0$ and $p_1$;
+We introduce some additional notations used throughout this proof:
+$|A|, A^c$ is the cardinality, complement of the set $A$;
+$D(p_0 || p_1)$ is the Kullback-Leibler divergence
+for distribution $p_0$ and $p_1$;
 $p_{B_q}(z) = q^z(1-q)^{1-z}$ is the probability mass distribution for $\Bern(q)$;
 From type theory, the set of possible types
 for $m$ samples with alphabet $\mathcal{X}$ is denoted as $\mathcal{P}_m$; For any $P\in \mathcal{P}_m$, the probability of the type
 class $T(P)$ under distribution $p_i$ is denoted as $Q_i^{m}(T(P))$.
 
-Let $Y=y^*$ be the ground truth.
-ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that there exists $y\neq y^*$ such that $p(x,z|y) > p(x,z|y^*)$	. Let $F_k$ denote
-the event when there are $k$ pairs difference between $y$ and $y^*$.
+Let us consider $P(\hat{Y}=Y|Y=y^*)$ for a certain labeling of nodes $y^*$.
+Since $Y$ is uniformly sampled, $P_e=P(\hat{Y}=Y|Y=y^*)$.
+ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that
+there exists $y\neq y^*$ such that $p(x,z|y) > p(x,z|y^*)$.
+Let $F_k$ denote
+the event when there are $k$ pairs difference
+between $y$ and $y^*$.
 \begin{equation}\label{eq:Fk}
 F_k:=\{\exists y \in \{\pm 1\}^n | \dist(y, y^*)=2k, p(x,z|y) > p(x,z|y^*) \}
 \end{equation}
@@ -289,13 +295,14 @@ Therefore, $f(x)$ increases in the interval $[1, \frac{n}{4}]$, and $f(k) \geq f
 P_e \leq \frac{n}{4}\exp(-nf(1)) = \exp(-n (C_1+C_2+o(1)))
 \end{equation}
 On the other hand $P_e \geq P(A_1) = \exp(-n(C_1+C_2+o(1)))$.
-Finally we have $-\frac{1}{n} \lim_{n \to \infty} \log P_e = C_1+C_2$.
+Finally we have
+$-\frac{1}{n} \lim_{n \to \infty} \log P_e = C_1+C_2$,
+and the proof of Theorem \ref{thm:constant} is completed.
 
 \section{Error Rate for Sparse SBMSI}\label{sec:ees}
-In the above we have discussed the dense graph,
-while the result for the sparse graph
-is summarized
-in the following theorem:
+In the above we have discussed the exponential error rate for dense SBMSI.
+In this section, we will present the polynomial error rate for sparse SBMSI.
+This result is summarized in the following theorem:
 \begin{theorem}\label{thm:Pe}
 Let $\gamma = \frac{ m}{\log n}$ be a constant. If $p = a \log n /n$ and $q = b \log n / n$, using maximum likelihood estimator \eqref{eq:mle},
 if
@@ -323,10 +330,17 @@ Under some parameter configurations specified in \eqref{eq:oneC},
 the quantity $\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2$
 exactly describes the error rate for the exact recovery problem of SBMSI.
 
-We mention that \eqref{eq:oneC} is satisfied
-when the difference between $a$ 
-and $b$ is large. It is a slightly stronger condition
-than $\sqrt{a}-\sqrt{b} > \sqrt{2}$.
+We notice that when \eqref{eq:oneC} is satisfied,
+so is \eqref{eq:positive_condition}. In such case, the error
+rate is given by
+$$
+-\lim_{n\to \infty} \frac{\log P_e}{\log n}
+= \gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2
+$$
+To obtain this error rate,
+we need a slightly stronger condition \eqref{eq:oneC}
+than the recovery threshold $\sqrt{a}-\sqrt{b} > \sqrt{2}$
+for SSBM.
 
 In addition, when $p_0=p_1$,
 Theorem \ref{thm:Pe} gives the error rate of maximum likelihood for SSBM. This corollary is
@@ -406,10 +420,14 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 Below we use Chernoff's inequality to give an upper bound of \eqref{eq:ein}:
 $P(A) \leq n^{-k\theta^*_k}$ where $\theta^*_k=\gamma D_{1/2}(p_0||p_1)+(1-\frac{2k}{n})(\sqrt{a}-\sqrt{b})^2$.
 \begin{align*}
-&P(A_k) \leq \mathbb{E}[\exp \left( s\sum_{i=1}^{km}
+&P(A_k) \leq \mathbb{E}
+\left[\exp \left( s\sum_{i=1}^{km}
 \left( \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
-+ \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \right) \right)]\\
-& \cdot \mathbb{E}[\exp\left(s\log \frac{a}{b}\sum_{i=1}^{k(n-2k)} (z'_i - z_i )\right)] \\
++ \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \right)
+\right)\right]\\
+& \cdot \mathbb{E}
+\left[\exp\left(s\log \frac{a}{b}\sum_{i=1}^{k(n-2k)} (z'_i - z_i )\right)
+\right] \\
 & \stackrel{(a)}{=} (\sum_{x\in \mathcal{X}} p_0^{1-s}(x)p_1^{s}(x))^{km} (\sum_{x\in \mathcal{X}} p_1^{1-s}(x)p_0^{s}(x))^{km}\\
 &   \cdot \exp(k\log n (1-\frac{2k}{n})(-a-b+a^sb^{1-s}+b^sa^{1-s} +o(1)) )
 \end{align*}
@@ -439,7 +457,10 @@ P_e &\leq(1+o(1)) \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k((-\mu + o(1)) \log
 Therefore, \eqref{eq:PeMain} is established.
 
 To prove the lower bound \eqref{eq:PeMainL},
-we first define the event $A_{ij}$ as $\{p(x,z|y) > p(x,z|y^*),y_s=-y^*_s, s=i,j \textrm{ and } \dist(y,y^*)=2  \}$.
+we first define the event $A_{ij}$ as
+$p(x,z|y) > p(x,z|y^*)$ where $y$ is defined as
+$y_s=-y^*_s, s=i,j$ and $y_s=y^*_s$ otherwise.
+
 It follows that $\cup_{1\leq i < j\leq n} A_{ij} \subset F$ where $F$ denotes the event when ML fails to recover the community labels exactly.
 By Bonferroni inequality,
 \begin{equation}\label{eq:bonf}
@@ -455,7 +476,7 @@ We first deal with $P(A_{ij})$.
 Notice that the event $A_{ij}$
 is equivalent with \eqref{eq:ein} for $k=1$.
 By Lemma \ref{lem:single_lower}, $P(A_{ij})$ is lower bounded by $n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$. Since $|\{1\leq i < j\leq n\}|=\binom{n}{2}$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{2}n^{-\mu+o(1)}$.
-Next we give upper bound of $P(A_{ij} \cap A_{rs})$ according to two cases.
+Next we give the upper bound of $P(A_{ij} \cap A_{rs})$ according to two cases.
 
 First is the case when $|\{i,j,r,s\}|=4$. Then $A_{ij} \cap A_{rs}$ implies the event
 $A_{ijrs}: \{p(x,z|y^{(1)})p(x,z|y^{(2)}) > p^2(x,z|y^*)\}$ where $y^{(1)}(y^{(2)})$ differs from $y^*$ at position $i,j(r,s)$.
@@ -499,7 +520,8 @@ it follows that
 $$
 P(A_{ijrs}) \leq n^{-\mu'/2-1-(\gamma  D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2)}
 $$
-where $\mu'>0$ is the difference of two sides in \eqref{eq:oneC}. 
+where $\mu'=(\sqrt{a}-\sqrt{b})^2-2 
+- 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2>0$ from \eqref{eq:oneC}. 
 The set $S_2:=\{(i,j,r,s)| i=r \textrm{ or } j=s, (i,j)\neq (r,s) \}$
 has at most $n^3$ such terms,
 then the summation $\sum_{(i,j,r,s)\in S_2}
