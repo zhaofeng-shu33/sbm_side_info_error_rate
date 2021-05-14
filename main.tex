@@ -161,7 +161,7 @@ $Y$:
 The estimator $\hat{Y}$, given by \eqref{eq:mle}, is a ML estimator in restricted parameter space.
 In contract,
 ML estimator for $y\in \{ \pm 1 \}^n$ (unrestricted parameter space)
-is considered in \cite{abbe17sideinfo} for SBM with equal probability.
+should be used for SBM with equal probability.
 To study the performance of the ML estimator, we need a metric of error rate,
 whose formal definition is given as:
 \begin{definition}[Error Rate of Exact Recovery for SBMSI]
@@ -210,13 +210,15 @@ Besides, assuming $\gamma$ is an integer, the error exponent can be regarded as 
 $\underbrace{p_0\times \dots \times p_0}_{\gamma} \times \Bern(p)$ and $\underbrace{p_1\times \dots \times p_1}_{\gamma} \times \Bern(q)$. By independent conditions, we can decompose the
 divergence in the summation form.
 Furthermore, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
-Some additional notations are necessary in this Section: $|A|, A^c$ is the cardinality, complement of the set $A$;
+
+\subsection{Proof of Theorem \ref{thm:constant}}
+We introduce some additional notations used throught this proof: $|A|, A^c$ is the cardinality, complement of the set $A$;
 $D(p_0 || p_1)$ is the Kullback-Leibler divergence for distribution $p_0$ and $p_1$;
 $p_{B_q}(z) = q^z(1-q)^{1-z}$ is the probability mass distribution for $\Bern(q)$;
 From type theory, the set of possible types
 for $m$ samples with alphabet $\mathcal{X}$ is denoted as $\mathcal{P}_m$; For any $P\in \mathcal{P}_m$, the probability of the type
 class $T(P)$ under distribution $p_i$ is denoted as $Q_i^{m}(T(P))$.
-\subsection{Proof of Theorem \ref{thm:constant}}
+
 Let $Y=y^*$ be the ground truth.
 ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that there exists $y\neq y^*$ such that $p(x,z|y) > p(x,z|y^*)$	. Let $F_k$ denote
 the event when there are $k$ pairs difference between $y$ and $y^*$.
@@ -252,8 +254,8 @@ and $\widetilde{Z}'$ is defined similarly. Then
 When $p,q$ are constant, the probability of the event $A_k$ given by \eqref{eq:mnk} can be estimated by Sanov's theorem.
 $-\frac{1}{kn}\log P(A_k) \to \theta^*_k$ where 
 \begin{align*}
-\theta^*_k &= \min \gamma (D(\widetilde{X}_1||p_0) + D(\widetilde{X}_2||p_1)) + \\
-&(1-\frac{2k}{n})D(\widetilde{Z}||\Bern(p)) + D(\widetilde{Z}'||\Bern(q))  \\
+\theta^*_k &= \min \gamma (D(p_{\widetilde{X}_1}||p_0) + D(p_{\widetilde{X}_2}||p_1)) + \\
+&(1-\frac{2k}{n})D(p_{\widetilde{Z}}||\Bern(p)) + D(p_{\widetilde{Z}'}||\Bern(q))  \\
 & (\widetilde{X}_1, \widetilde{X}_2, \widetilde{Z}, \widetilde{Z}')
 \textrm{ satisfy } \eqref{eq:mnk}
 \end{align*}
@@ -354,11 +356,12 @@ as long as \eqref{eq:oneC} holds.
 % or only from $\binom{n}{2}$ states.
 
 \subsection{Proof of Theorem \ref{thm:Pe}}
-We start from \eqref{eq:mnk} to get the upper and lower bound for $P_e$.
+We start from \eqref{eq:mnk} to get the upper and lower bounds for $P_e$.
 Firstly, we introduce the following lemma, which gives the lower bound
 of $P(A_1)$ when $p,q=O(\frac{\log n}{n})$.
 \begin{lemma}\label{lem:single_lower}
-For event $E$ specified in \eqref{eq:ein} with $k=1$, the following estimation holds
+For event $E$ specified in \eqref{eq:ein} with $k=1$,
+we have the following estimation
 \begin{equation}
 P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n )
 \end{equation}
@@ -400,7 +403,7 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	\eqref{eq:32}.
 \end{proof}
 \begin{proof}[Proof of Theorem \ref{thm:Pe}]
-Below we use Chernoff inequality to give an upper bound of \eqref{eq:ein}:
+Below we use Chernoff's inequality to give an upper bound of \eqref{eq:ein}:
 $P(A) \leq n^{-k\theta^*_k}$ where $\theta^*_k=\gamma D_{1/2}(p_0||p_1)+(1-\frac{2k}{n})(\sqrt{a}-\sqrt{b})^2$.
 \begin{align*}
 &P(A_k) \leq \mathbb{E}[\exp \left( s\sum_{i=1}^{km}
@@ -435,12 +438,12 @@ P_e &\leq(1+o(1)) \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k((-\mu + o(1)) \log
 \end{align*}
 Therefore, \eqref{eq:PeMain} is established.
 
-To prove the lower bound \eqref{eq:PeMainL}, we first
-define the event $A_{ij}$ as $\{p(x,z|y) > p(x,z|y^*),y_s=-y^*_s, s=i,j \textrm{ and } \dist(y,y^*)=2  \}$.
+To prove the lower bound \eqref{eq:PeMainL},
+we first define the event $A_{ij}$ as $\{p(x,z|y) > p(x,z|y^*),y_s=-y^*_s, s=i,j \textrm{ and } \dist(y,y^*)=2  \}$.
 It follows that $\cup_{1\leq i < j\leq n} A_{ij} \subset F$ where $F$ denotes the event when ML fails to recover the community labels exactly.
 By Bonferroni inequality,
 \begin{equation}\label{eq:bonf}
-	P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
+	P(\bigcup_{1\leq i < j\leq n} A_{ij}) \geq
 	\sum_{1\leq i < j\leq n} P(A_{ij})
 	- \sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})		
 \end{equation}
@@ -475,7 +478,7 @@ A_{ijrs}: &\, 2\sum_{i=1}^m  \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
 & +\log\frac{a}{b}\left(
 \sum_{i=1}^{n} (z'_i - z_i) + 2\sum_{i=n+1}^{3n/2} (z'_i - z_i)\right)  \geq 0\notag
 \end{align}
-Using Chernoff inequality, we can write an upper bound of $P(A_{ijrs})$ as
+Using Chernoff's inequality, we can write an upper bound of $P(A_{ijrs})$ as
 \begin{align*}
 &P(A_{ijrs}) \leq
 (\sum_{x\in \mathcal{X}} p_0^{1-2s}p_1^{2s})^m
@@ -517,7 +520,8 @@ Then we conclude that $P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
 \section{Conclusion}\label{s:conclusion}
 In this paper, we obtain the optimal error rate in the sense of exact recovery for a two-community SBM with side information. Our result
 shows that the detection error can be characterized by Rényi divergence and the parameters of SBM. To control the recovery error within a given level,
-our result shares insight on sample complexities of node features.
+our result shares insight on
+the necessary number of features and nodes.
 
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
