@@ -118,13 +118,19 @@ The two-community symmetric stochastic block model (SSBM) is a special case of S
 		\item There is an edge of $G$ between the vertices $i$ and $j$ with probability $p$ if $Y_i=Y_j$ and with probability $q$ if $Y_i \neq Y_j$; the existence of each edge is independent with each other.
 	\end{enumerate}
 \end{definition}
+In the above definition, we require the hard constraint $\sum_{i=1}^n Y_i=0$
+to be satisfied. There is another formulation, which assumes $Y_1, \dots, Y_n$ i.i.d. sampled
+from $\Bern(\frac{1}{2})$. We call the former SSBM with equal community size while latter as SSBM with equal probability.
+Without specific mention, the SSBM model mentioned in this paper is the former one.
+
 Sampling from SSBM, we can get a pair $(Y,G)$ where each feasible label $Y=y$ has probability $ 1/ \binom{n}{n/2}$.
 Within this probabilistic setting, the community detection task is to infer $Y$ from $G$.
 When
 additional node observations $X$ are added, we expect that better inference accuracy of $Y$ is achieved using $(Y,X)$.
 The additional node observation is called side information, and we define it formally in the following model:
 \begin{definition}[SBMSI]
-	Let $(Y,G)$ be sampled from $\SSBM(n,p,q)$, $X_{i1}, \dots, X_{im}$ are i.i.d. random variables for $i \in [n]$,
+	Let $(Y,G)$ be sampled from
+	$\SSBM(n,p,q)$, and $X_{i1}, \dots, X_{im}$ are i.i.d. random variables for $i \in [n]$,
 	whose probability density function $p(x)$ is determined by $Y_i$ as
 	\begin{equation}
 	p(x) = \begin{cases}
@@ -237,7 +243,7 @@ In addition, when $p_0=p_1$,
 Theorem \ref{thm:Pe} gives the error rate of maximum likelihood for SSBM. This corollary is
 summarized as follows:
 \begin{corollary}
-If the equation \ref{eq:oneC}
+If the equation \eqref{eq:oneC}
 is satisfied,
  and we consider $\SSBM(n,\frac{a\log n}{n}, \frac{b \log n}{n})$. For ML algorithms, the exact recovery error rate $P_e$ satisfies
 \begin{equation}\label{eq:cor}
@@ -354,7 +360,7 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	& = \exp(-\log n (\gamma D_{1/2}(P_0||P_1) + (\sqrt{a} - \sqrt{b})^2+ o(1))).
 	\end{align*}
 \end{proof}
-\begin{lemma}
+\begin{lemma}\label{lem:p0p1}
 	Let $p_0,p_1$ be two probability distributions defined on alphabet $\mathcal{X}$,
 	then the following inequality holds
 	\begin{equation}\label{eq:32}
@@ -394,7 +400,10 @@ is analyzed using \eqref{eq:FAk}.
 &P_e \leq (1+o(1))\sum_{k=1}^{\frac{n}{\sqrt{\log n}}} P(F_k) \leq (1+o(1))\\
 & \cdot \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k(-\mu \log n + \frac{2k}{n} \log n(\sqrt{a} - \sqrt{b})^2 - 2\log 2k + 2))
 \end{align*}
-where $\mu = (\sqrt{a} - \sqrt{b})^2-2 + \gamma D_{1/2}(p_0||p_1) > 0$.
+where $\mu$ is defined as
+\begin{equation}\label{eq:mu_def}
+	\mu = (\sqrt{a} - \sqrt{b})^2-2 + \gamma D_{1/2}(p_0||p_1) > 0	
+\end{equation}
 Using the inequality
 $$
 \frac{2k}{n}(\sqrt{a} - \sqrt{b})^2\log n -2\log2k+2\leq  C\sqrt{\log n}
@@ -410,17 +419,36 @@ To prove the lower bound \eqref{eq:PeMainL}, we first
 define the event $A_{ij}$ as $\{p(x,z|y) > p(x,z|y^*),y_s=-y^*_s, s=i,j \textrm{ and } \dist(y,y^*)=2  \}$.
 It follows that $\cup_{1\leq i < j\leq n} A_{ij} \subset F$ where $F$ denotes the event when ML fails to recover the community labels exactly.
 By Bonferroni inequality,
-$P(\cup_{1\leq i < j\leq n} A_{ij}) \geq \sum_{1\leq i < j\leq n} P(A_{ij}) - \sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})$.
-We first deal with $P(A_{ij})$. Notice that $A_{ij}$ is equivalent with \eqref{eq:ein} for $k=1$. By Lemma \ref{lem:single_lower}, $P(A_{ij})$ is lower bounded by $n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$. Since $|\{1\leq i < j\leq n\}|=\binom{n}{2}$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{2}n^{-\mu+o(1)}$.
+\begin{equation}\label{eq:bonf}
+	P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
+	\sum_{1\leq i < j\leq n} P(A_{ij})
+	- \sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})		
+\end{equation}
+To get the lower bound of $P(\cup_{1\leq i < j\leq n} A_{ij})$ by
+\eqref{eq:bonf},
+we need a lower bound for the first term and an upper bound for
+the second term.
+We first deal with $P(A_{ij})$.
+Notice that the event $A_{ij}$
+is equivalent with \eqref{eq:ein} for $k=1$.
+By Lemma \ref{lem:single_lower}, $P(A_{ij})$ is lower bounded by $n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$. Since $|\{1\leq i < j\leq n\}|=\binom{n}{2}$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{2}n^{-\mu+o(1)}$.
 Next we give upper bound of $P(A_{ij} \cap A_{rs})$ according to two cases.
+
 First is the case when $|\{i,j,r,s\}|=4$. Then $A_{ij} \cap A_{rs}$ implies the event
 $A_{ijrs}: \{p(x,z|y^{(1)})p(x,z|y^{(2)}) > p^2(x,z|y^*)\}$ where $y^{(1)}(y^{(2)})$ differs from $y^*$ at position $i,j(r,s)$.
-After taking the $\log$ on both sides and simplification, the inequality in $A_{ijrs}$ becomes \eqref{eq:ein}  with $k=2$.
-Therefore, $P(A_{ij} \cap A_{rs}) \leq n^{-2(\theta^*_2 + o(1))} $. There are
-$\binom{n}{4} \leq n^4$ terms. Therefore, the probability sum
-is bounded by $n^{-2\mu +o(1)}$, which has smaller order than $n^{-\mu+o(1)}$ since $\mu > 0$.
+After taking the $\log$ on both sides and simplification,
+the inequality representation for the event $A_{ijrs}$ becomes \eqref{eq:ein}  with $k=2$.
+Therefore, $P(A_{ij} \cap A_{rs}) \leq n^{-2(\theta^*_2 + o(1))} $. The number of elements
+in the set $S_1:=\{(i,j,r,s)| (i,j)\neq (r,s), i<j, r<s\}$ is $\binom{n}{4} \leq n^4$.
+Therefore, the probability sum
+$\sum_{(i,j,r,s) \in S_1} P(A_{ij} \cap A_{rs})
+\leq n^{-2\mu +o(1)}$,
+which has smaller order than $n^{-\mu+o(1)}$ since $\mu > 0$.
 
-Another case happens when $|\{i,j,r,s\}|=3$. Under such case, we first suppose $i=r, y^{(1)}_i = y^{(2)}_r = 1$, then
+Another case happens when $|\{i,j,r,s\}|=3$. Under such case, without loss of generality we can assume $i=r, y^{(1)}_i = y^{(2)}_r = 1$.
+For the case $y^{(1)}_i = y^{(2)}_r = -1$, we only need to exchange
+$p_0$ and $p_1$, and the following analysis is still valid.
+then
 \begin{align}
 A_{ijrs}: &\, 2\sum_{i=1}^m  \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
 + \sum_{i=1}^{2m} \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \\
@@ -442,19 +470,23 @@ P(A_{ijrs})\leq & (\sum_{x\in \mathcal{X}} p_0^{1/3}(x)p_1^{2/3}(x))^{3m}\\
 \leq &  \exp(-\log n(\gamma D_{1/2}(p_1 || p_0) \\
 &+ \frac{3}{2} (a+b-a^{1/3}b^{2/3}-a^{2/3}b^{1/3})))
 \end{align*}
+where the last inequality follows from Lemma \ref{lem:p0p1}.
 From the condition mentioned in \eqref{eq:oneC},
 it follows that
 $$
 P(A_{ijrs}) \leq n^{-\mu'/2-1-(\gamma  D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2)}
 $$
 where $\mu'>0$ is the difference of two sides in \eqref{eq:oneC}. 
-There are at most $n^3$ such terms, then the summation is bounded by
-$n^{-\mu'/2-\mu }$,
+The set $S_2:=\{(i,j,r,s)| i=r \textrm{ or } j=s, (i,j)\neq (r,s) \}$
+has at most $n^3$ such terms,
+then the summation $\sum_{(i,j,r,s)\in S_2}
+P(A_{ij}\cap A_{rs}) \leq n^{-\mu'/2-\mu }$,
 which has smaller order than $n^{-\mu}$.
 
-If $i=r, y^{(1)}_i = y^{(2)}_r = -1$, similar deduction can be made, and $D_{2/3}(p_0||p_1)$ is used
-instead.
-We conclude that $P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
+Based on the above discussion, 
+$\sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})\leq n^{-2\mu + o(1)}
++ n^{-\mu - \mu'/2} = o(1) n^{-\mu + o(1)}$.
+Then we conclude that $P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
 (1+o(1))n^{-\mu + o(1)}$.
 \end{proof}
 \section{Conclusion}\label{s:conclusion}
