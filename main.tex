@@ -44,14 +44,14 @@
 \begin{abstract}
     Side information improves the accuracy in community detection problems.
     While experimental results demonstrate the superior performance of many detection methods
-    based on both the node attributes and graph structure, the question of the fundamental limit of the error rate \textcolor{red}{for exact recovery} remains open.
+    based on both the node attributes and graph structure, the question of the fundamental limit of the error rate for exact recovery remains open.
     In this paper, we obtain asymptotic optimal error rate in the sense of 
-    exact recovery for a special two-community symmetric stochastic block model (SSBM) with side information consisting \textcolor{red}{of} multiple features.
-    Our result shares\textcolor{red}{(provides) insight on the number of node features and nodes in the graph needed for community detection}.
+    exact recovery for a special two-community symmetric stochastic block model (SSBM) with side information consisting of multiple features.
+    Our result provides insight on the number of features and nodes in the graph needed for community detection.
 \end{abstract}
 \section{Introduction}
 In network analysis, community detection assigns discrete labels to each node of the graph based on the observation of graph edges.
-In addition to \textcolor{red}{the} edge information, extra node features are often available in real-world applications in the form of graph signal \cite{dong2020graph},
+In addition to the edge information, extra node features are often available in real-world applications in the form of graph signal \cite{dong2020graph},
 noisy labels \cite{mossel2016local}, or
 feature vectors \cite{zhang2016community}. Combining the edge and node information, it is expected that better
 accuracy can be achieved for community detection problems. Within this context, a central problem 
@@ -85,8 +85,7 @@ $\Bern(p)$ and $\Binom(n,p)$ represent Bernoulli
 and Binomial distribution respectively; $f(n)=\omega(g(n))$(or $=o(g(n))$) means that $\lim_{n\to \infty} f(n) / g(n) = \infty $(or $=0$);
 $\mathbbm{1}[A]$ is the indicator function for the event $A$; $W^n$ is the n-ary Cartesian power of the set $W$;
 The Hamming distance of 
-two $n$-dimensional vectors is written as $\dist(x,y):=\sum_{i=1}^n \mathbbm{1}[x_n\neq y_n]$ for $x,y\in \{\pm 1 \}^n$. The Rényi divergence of order $\alpha$ from distribution $P$ to $Q$ is defined
-as $D_{\alpha}(P||Q) = \frac{1}{\alpha - 1} \log \sum_{x\in \mathcal{X}} P^{\alpha}(x)Q^{1-\alpha}(x) $.
+two $n$-dimensional vectors is written as $\dist(x,y):=\sum_{i=1}^n \mathbbm{1}[x_n\neq y_n]$ for $x,y\in \{\pm 1 \}^n$.
 
 \section{Related Works}\label{s:rw}
 The model considered in this work extends the two-community SBM in \cite{abbe2015community}.
@@ -152,7 +151,7 @@ The estimator $\hat{Y}$, given by \eqref{eq:mle}, is a ML estimator in restricte
 In contract, ML estimator for $y\in \{ \pm 1 \}^n$ (unrestricted parameter space) is considered in \cite{abbe17sideinfo} for SBM with equal probability.
 To study the performance of the ML estimator, we need a metric of error rate,
 whose formal definition is given as:
-\begin{definition}[Error Rate of Exact Recovery for SSBM with side information]
+\begin{definition}[Error Rate of Exact Recovery for SBMSI]
 		Let $(Y,Z,X)$ be sampled from $\SBMSI(n,m,p,q,p_0, p_1)$.
 		We define the error rate of exact recovery for an algorithm that takes $(Z,X)$ as inputs and outputs $\hat{Y}=\hat{Y}(Z,X)$ as
 		$P_e:=P(\hat{Y} \neq Y)$.
@@ -170,10 +169,12 @@ Without edge observations, the estimation is decomposed into $n$
 independent hypothesis testing problems with the global constraint $\sum_{i=1}^n Y_i=0$. 
 In such case, Rényi divergence with order $\frac{1}{2}$
 is used to quantify the error exponent \cite{gao2018community}.
-This information theoretic quantity is defined as:
+This information theoretic quantity can be written as:
 \begin{equation}
 D_{1/2}(p_0 || p_1) = -2\log(\sum_{x \in \mathcal{X}} \sqrt{p_0(x)p_1(x)} )
 \end{equation}
+which is a special case for Rényi divergence between distribution $P$ and $Q$ of order $\alpha$: $D_{\alpha}(P||Q) = \frac{1}{\alpha - 1} \log \sum_{x\in \mathcal{X}} P^{\alpha}(x)Q^{1-\alpha}(x) $.
+
 With node observations, we divide our discussion between two cases:
 \begin{enumerate}
 \item $p,q$ are constant values;
@@ -191,13 +192,13 @@ the latter case is analyzed in Theorem \ref{thm:Pe}.
 From Theorem \ref{thm:constant}, we see that the recovery error decreases in exponential rate.
 When $\gamma=0$, Theorem \ref{thm:constant} says $D_{1/2}(\Bern(p)||\Bern(q))$
 is the error exponent for exact recovery. Since weak recovery differs from exact recovery by a polynomial factor, $D_{1/2}(\Bern(p)||\Bern(q))$ is also the exponent for weak recovery, which has been obtained
-in \cite{zhang2016}. Besides, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is neglectable.
+in \cite{zhang2016}. Besides, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
 
 In the above we have discussed the dense graph while the result for the sparse graph
 is summarized
 in the following theorem:
 \begin{theorem}\label{thm:Pe}
-Let \textcolor{red}{$\gamma = \frac{ m}{\log n}$} be a constant. If $p = a \log n /n$ and $q = b \log n / n$, using maximum likelihood estimator \eqref{eq:mle},
+Let $\gamma = \frac{ m}{\log n}$ be a constant. If $p = a \log n /n$ and $q = b \log n / n$, using maximum likelihood estimator \eqref{eq:mle},
 if
 \begin{equation}\label{eq:positive_condition}
 \gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 > 0
@@ -207,7 +208,7 @@ of exact recovery is bounded by
 \begin{equation}\label{eq:PeMain}
 P_e \leq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right) }
 \end{equation}
-If the following condition \textcolor{red}{(definition of $D_{\frac{2}{3}}(p_1||p_0)$?)}
+If the following condition
 \begin{align}
 &(\sqrt{a}-\sqrt{b})^2-2 + 2\gamma \min \{D_{\frac{2}{3}}(p_0||p_1), D_{\frac{2}{3}}(p_1||p_0) \} \notag \\
 &> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2 + 2\gamma D_{1/2}(p_0||p_1)\label{eq:oneC}
