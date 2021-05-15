@@ -213,18 +213,18 @@ divergence in the summation form.
 Furthermore, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
 
 \subsection{Proof of Theorem \ref{thm:constant}}
-We introduce some additional notations used throughout this proof:
-$|A|, A^c$ is the cardinality, complement of the set $A$;
-$D(p_0 || p_1)$ is the Kullback-Leibler divergence
-for distribution $p_0$ and $p_1$;
-$p_{B_q}(z) = q^z(1-q)^{1-z}$ is the probability mass distribution for $\Bern(q)$;
+We introduce some additional notations used throughout this proof. Let 
+$|A|, A^c$ be the cardinality, complement of the set $A$, respectively. For distributions $p_0$ and $p_1$,
+$D(p_0 || p_1)$ is the Kullback-Leibler divergence.
+ Let
+$p_{B_q}(z) = q^z(1-q)^{1-z}$ be the probability mass distribution for $\Bern(q)$.
 From type theory, the set of possible types
-for $m$ samples with alphabet $\mathcal{X}$ is denoted as $\mathcal{P}_m$; For any $P\in \mathcal{P}_m$, the probability of the type
+for $m$ samples with alphabet $\mathcal{X}$ is denoted as $\mathcal{P}_m$. For any $P\in \mathcal{P}_m$, the probability of the type
 class $T(P)$ under distribution $p_i$ is denoted as $Q_i^{m}(T(P))$.
 
 Let us consider $P(\hat{Y}=Y|Y=y^*)$ for a certain labeling of nodes $y^*$.
 Since $Y$ is uniformly sampled, $P_e=P(\hat{Y}=Y|Y=y^*)$.
-ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that
+The ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that
 there exists $y\neq y^*$ such that $p(x,z|y) > p(x,z|y^*)$.
 Let $F_k$ denote
 the event when there are $k$ pairs difference
@@ -234,7 +234,7 @@ F_k:=\{\exists y \in \{\pm 1\}^n | \dist(y, y^*)=2k, p(x,z|y) > p(x,z|y^*) \}
 \end{equation}
 Since
 $y$ is expected to satisfy the constraint $\sum_{i=1}^n y_i=0$, $\dist(y, y^*)$ is only allowed to take even
-values. Taking $\log$ on both sides of $p(x,z|y) > p(x,z|y^*)$ we can get the equivalent inequality:
+values. Taking logarithm on both sides of $p(x,z|y) > p(x,z|y^*)$, we get the equivalent inequality:
 
 \begin{equation}\label{eq:ein}
 \sum_{i=1}^{km} (\log \frac{p_1(x_{1i})}{p_0(x_{1i})}
@@ -301,7 +301,7 @@ $-\frac{1}{n} \lim_{n \to \infty} \log P_e = C_1+C_2$,
 and the proof of Theorem \ref{thm:constant} is completed.
 
 \section{Error Rate for Sparse SBMSI}\label{sec:ees}
-In the above we have discussed the exponential error rate for dense SBMSI.
+In Section \ref{sec:ee} we discussed the exponential error rate for dense SBMSI.
 In this section, we will present the polynomial error rate for sparse SBMSI.
 This result is summarized in the following theorem:
 \begin{theorem}\label{thm:Pe}
@@ -325,8 +325,8 @@ is satisfied, then we can show that $P_e$ is lower bounded by
 P_e \geq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right)}
 \end{equation}
 \end{theorem}
-Theorem \ref{thm:Pe} tells us that the side information $X$ accelerates the
-decreasing of error probability $P_e$ quantified by $\gamma D_{1/2}(p_0||p_1)$.
+Theorem \ref{thm:Pe} tells us that the side information $X$ increased the
+decay rate of error probability $P_e$ quantified by $\gamma D_{1/2}(p_0||p_1)$.
 Under some parameter configurations specified in \eqref{eq:oneC},
 the quantity $\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2$
 exactly describes the error rate for the exact recovery problem of SBMSI.
