@@ -156,7 +156,7 @@ where $p(z|y)$ is the likelihood function for $\SSBM$ and $\sigma_i = (1+y_i)/2$
 Based on \eqref{eq:lh}, we can use the maximum likelihood (ML) method to estimate
 $Y$:
 \begin{align}
-    \hat{Y} &= \argmax_y p(x,z|Y=y) \notag \\
+    \hat{Y} &= \arg\max_y p(x,z|Y=y) \notag \\
     s.t.\, & y_i \in \{\pm 1\}, \sum_{i=1}^n y_i=0 \label{eq:mle}
 \end{align}
 The estimator $\hat{Y}$, given by \eqref{eq:mle}, is a ML estimator in restricted parameter space.
