@@ -79,7 +79,7 @@ Finally the article concludes in Section \ref{s:conclusion}.
 The following notations are used throughout this paper: 
 the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
 $V=\{1,\dots, n\} =: [n]$;
-$\mathcal{X}$ is the alphabet
+$\mathcal{X}$ is the alphabet set
 of the random variable $X$; $m$ is the number of samples generated at each node;
 $\Bern(p)$ and $\Binom(n,p)$ represent Bernoulli
 and Binomial distribution respectively; $f(n)=\omega(g(n))$(or $=o(g(n))$) means that $\lim_{n\to \infty} f(n) / g(n) = \infty $(or $=0$);
@@ -148,7 +148,8 @@ The additional node observation is called side information, and we define it for
 \end{definition}
 The node observations can be written concisely as $\{X_{ij} | i \in [n], j \in [m]\}$. Besides, the graph $G$ can be regarded as observations of edges, and
 we can denote the edge observations in a similar way by using $Z_{ij}:=\mathbbm{1}[\{i,j\} \in E(G)]$.
-Using $X_{ij}$ and $Z_{ij}$, the likelihood function for $Y$ is
+Using $X_{ij}$ and $Z_{ij}$, the likelihood function for
+given $Y$ is
 \begin{equation}\label{eq:lh}
     p(x, z| Y=y) = p(z|y)\prod_{i=1}^n \prod_{j=1}^m p^{\sigma_i}_0(x_{ij})p^{1-\sigma_i}_1(x_{ij}) 
 \end{equation}
@@ -159,7 +160,7 @@ $Y$:
     \hat{Y} &= \arg\max_y p(x,z|Y=y) \notag \\
     s.t.\, & y_i \in \{\pm 1\}, \sum_{i=1}^n y_i=0 \label{eq:mle}
 \end{align}
-The estimator $\hat{Y}$, given by \eqref{eq:mle}, is a ML estimator in restricted parameter space.
+The estimator $\hat{Y}$, given by \eqref{eq:mle}, is an ML estimator in restricted parameter space.
 In contract,
 ML estimator for $y\in \{ \pm 1 \}^n$ (unrestricted parameter space)
 should be used for SBM with equal probability.
@@ -167,14 +168,15 @@ To study the performance of the ML estimator, we need a metric of error rate,
 whose formal definition is given as:
 \begin{definition}[Error Rate of Exact Recovery for SBMSI]
 		Let $(Y,Z,X)$ be sampled from $\SBMSI(n,m,p,q,p_0, p_1)$.
-		We define the error rate of exact recovery for an algorithm that takes $(Z,X)$ as inputs and outputs $\hat{Y}=\hat{Y}(Z,X)$ as
+		For an algorithm that takes $(Z,X)$ as inputs and outputs $\hat{Y}=\hat{Y}(Z,X)$,
+		we define its error rate of exact recovery as
 		$P_e:=P(\hat{Y} \neq Y)$.
 \end{definition}
 The above definition is slightly different from that of SBM as the latter uses $\hat{Y} \neq \pm Y$.
 When no side information is available, we can only expect a recovery up to a global sign. However,
 since $p_0 \neq p_1$, the sign of $Y$ can also be determined when side information is in hand.
 
-We make another remark that exact recovery metric imposes stricter requirement on the recovery algorithm than its weak recovery
+We make another remark that the exact recovery metric imposes stricter requirement on the recovery algorithm than its weak recovery
 counterpart, which uses $\mathbb{E}[\dist(\hat{Y}, Y)]/n$ as the error rate.
 
 Below we analyze the exact recovery error of the maximum likelihood estimator $\hat{Y}$
@@ -197,7 +199,7 @@ The recovery error rate for the first case is given in Section \ref{sec:ee} whil
 the latter case is analyzed in Section \ref{sec:ees}.
 \section{Error Exponent for Dense SBMSI}\label{sec:ee}
 \begin{theorem}\label{thm:constant}
-	Let $\gamma = \frac{m}{n} = O(1)$. If $p,q$ are constant, using maximum likelihood estimator \eqref{eq:mle},
+	Let $\gamma = \frac{m}{n}$ be a constant. If $p,q$ are constant, using maximum likelihood estimator \eqref{eq:mle},
 	the error exponent of exact recovery is given by:
 	\begin{equation}
 	-\lim_{n\to \infty} \frac{1}{n}\log P_e =  \gamma D_{1/2}(p_0 || p_1) + D_{1/2}(\Bern(p)||\Bern(q))
@@ -207,10 +209,20 @@ From Theorem \ref{thm:constant}, we see that the recovery error decreases in exp
 When $\gamma=0$, Theorem \ref{thm:constant} says $D_{1/2}(\Bern(p)||\Bern(q))$
 is the error exponent for exact recovery. Since weak recovery differs from exact recovery by a polynomial factor, $D_{1/2}(\Bern(p)||\Bern(q))$ is also the exponent for weak recovery, which has been obtained
 in \cite{zhang2016}.
-Besides, assuming $\gamma$ is an integer, the error exponent can be regarded as the Rényi divergence between the joint distribution
-$\underbrace{p_0\times \dots \times p_0}_{\gamma} \times \Bern(p)$ and $\underbrace{p_1\times \dots \times p_1}_{\gamma} \times \Bern(q)$. By independent conditions, we can decompose the
+Besides, assuming $\gamma$ is an integer,
+the error exponent can be regarded as the Rényi divergence
+between the joint distribution
+$\underbrace{p_0\times \dots \times p_0}_{\gamma} \times \Bern(p)$
+and $\underbrace{p_1\times \dots \times p_1}_{\gamma} \times \Bern(q)$.
+By independent conditions,
+we can decompose this
 divergence in the summation form.
-Furthermore, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
+Furthermore, the result of Theorem \ref{thm:constant}
+requires $m$ and $n$ have the same order.
+When $m=o(n)$,
+the edge information takes dominate effects;
+when $m=\omega(n)$,
+the side information dominates and the edge information is negligible.
 
 \subsection{Proof of Theorem \ref{thm:constant}}
 We introduce some additional notations used throughout this proof. Let 
@@ -245,7 +257,11 @@ values. Taking logarithm on both sides of $p(x,z|y) > p(x,z|y^*)$, we get the eq
 where $x_{1i}(x_{2i})$ are sampled from $p_0(p_1)$ respectively,
 and $z_{i} \sim \Bern(p), z'_{i} \sim \Bern(q)$.
 
-We define several empirical distributions as follows: 
+We denote the event described by \eqref{eq:ein} as $A_k$,
+and each $F_k$ can be regarded as the union of $\binom{n/2}{k}^2$ events
+of $A_k$ for different node indexes.
+
+To obtain an upper bound of $P(A_k)$, we further define several empirical distributions as follows:
 \begin{align*}
 P(\widetilde{X}_j = u) &= \frac{1}{km} \sum_{i=1}^{km} \mathbbm{1}[x_{ji} = u] \textrm{ for } u \in \mathcal{X}, j=1,2 \\
 P(\widetilde{Z} = u) &= \frac{1}{k(n-2k)}\sum_{i=1}^{k(n-2k)} \mathbbm{1}[z_i = u], u \in \{0, 1\}
@@ -258,11 +274,14 @@ and $\widetilde{Z}'$ is defined similarly. Then
 &[\sum_{z\in\{0,1\}} P_{\widetilde{Z}}(z) \log \frac{p_{B_q}(z)}{p_{B_p}(z)}
 + \sum_{z\in\{0,1\}} P_{\widetilde{Z}'}(z) \log \frac{p_{B_p}(z)}{p_{B_q}(z)}] \geq 0 \label{eq:mnk}
 \end{align}
-When $p,q$ are constant, the probability of the event $A_k$ given by \eqref{eq:mnk} can be estimated by Sanov's theorem.
-$-\frac{1}{kn}\log P(A_k) \to \theta^*_k$ where 
+When $p,q$ are constant,
+using \eqref{eq:mnk}, $P(A_k)$ can be estimated by Sanov's theorem:
+$-\frac{1}{kn}\log P(A_k) \to \theta^*_k$ as $n\to \infty$
+where 
 \begin{align*}
 \theta^*_k &= \min \gamma (D(p_{\widetilde{X}_1}||p_0) + D(p_{\widetilde{X}_2}||p_1)) + \\
-&(1-\frac{2k}{n})D(p_{\widetilde{Z}}||\Bern(p)) + D(p_{\widetilde{Z}'}||\Bern(q))  \\
+&(1-\frac{2k}{n})
+(D(p_{\widetilde{Z}}||\Bern(p)) + D(p_{\widetilde{Z}'}||\Bern(q)))  \\
 & (\widetilde{X}_1, \widetilde{X}_2, \widetilde{Z}, \widetilde{Z}')
 \textrm{ satisfy } \eqref{eq:mnk}
 \end{align*}
@@ -278,11 +297,14 @@ Therefore, $\theta^*_k = \gamma D_{1/2}(p_0 || p_1) +(1-\frac{2k}{n}) D_{1/2}(\B
 Denoting $C_1=\gamma D_{1/2}(p_0 || p_1), C_2=D_{1/2}(\Bern(p)||\Bern(q))$ for short,
 then $
 P(A_k) \leq \exp(-knC_1-k(n-2k) C_2)
-$. Using the union bound, we can control $P(F_k)$ by
+$ for large $n$.
+Using the union bound,
+we can control $P(F_k)$ by
 \begin{equation}\label{eq:FAk}
 P(F_k) \leq \binom{n/2}{k}^2 P(A_k)
 \end{equation}
-and by $\binom{n}{k} \leq (ne/k)^k$, we can further bound $P_e$ above as follows:
+and by $\binom{n}{k} \leq (ne/k)^k$,
+we can further bound $P_e$ above as follows:
 \begin{align*}
 P_e & \leq \sum_{k=1}^{n/4} \binom{n/2}{k}^2 P(A_k) \\
 & \leq \sum_{k=1}^{n/4} \exp(-nf(k))
@@ -375,14 +397,16 @@ We start from \eqref{eq:mnk} to get the upper and lower bounds for $P_e$.
 Firstly, we introduce the following lemma, which gives the lower bound
 of $P(A_1)$ when $p,q=O(\frac{\log n}{n})$.
 \begin{lemma}\label{lem:single_lower}
-For event $E$ specified in \eqref{eq:ein} with $k=1$,
+For event $A_1$ specified in \eqref{eq:ein} with $k=1$,
 we have the following estimation
-\begin{equation}
-P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n )
+\begin{equation}\label{eq:pa1}
+P(A_1) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n )
 \end{equation}
 \end{lemma}
 \begin{proof}[Proof of Lemma \ref{lem:single_lower}] 
-	When $k=1$, the left-hand side of \eqref{eq:ein} can be rewritten as $P(\sum_{i=1}^{n-2} (z'_i - z_i) \geq \epsilon)$
+	When $k=1$,
+	the inequality \eqref{eq:ein} can be rewritten as
+	$\sum_{i=1}^{n-2} (z'_i - z_i) \geq \epsilon$
 	where
 	\begin{align*}
 	\epsilon := &\frac{m}{\log a/b}\cdot [(D(P_{\widetilde{X}^{1}} || P_1) - D(P_{\widetilde{X}^{1}} || P_0)) \\
@@ -390,20 +414,28 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	\end{align*}
 	Let $P_{\widetilde{X}^{i_1}}$ and $P_{\widetilde{X}^{i_2}}$ follow the distribution
 	$P(X=x)=\frac{\sqrt{p_0(x)p_1(x)}}{ \sum_{x\in \mathcal{X}} \sqrt{p_0(x) p_1(x)}} $.
-	Then we have that $\epsilon =0$. Using Sanov's theorem and Lemma 4 from \cite{abbe2015exact}, we have that
+	which makes $\epsilon =0$.
+	For this special choice of distribution
+	$P_{\widetilde{X}^{i_1}}$ and $P_{\widetilde{X}^{i_2}}$,
+	using Sanov's theorem, we have that
 	\begin{align*}
-	 &P(E)
-	\geq\frac{1}{(m+1)^{2|\mathcal{X}|}} \exp(-m(D(p_{\widetilde{X}_1} || p_0) + D(p_{\widetilde{X}_2} || p_1)) \\
-	&\cdot\exp(- (\sqrt{a} - \sqrt{b})^2\log n+o(\log n) ) \\
-	& = \exp(-\log n (\gamma D_{1/2}(P_0||P_1) + (\sqrt{a} - \sqrt{b})^2+ o(1))).
+	&P(A_1)
+	\geq\frac{1}
+	{(m+1)^{2|\mathcal{X}|}}
+	\exp(-m(D(p_{\widetilde{X}_1} || p_0) + D(p_{\widetilde{X}_2} || p_1))\\
+	&\quad\cdot P(\sum_{i=1}^{n-2} (z'_i - z_i) \geq 0)\\
+	& = \exp(-\log n (\gamma D_{1/2}(P_0||P_1)+o(1))) P(\sum_{i=1}^{n-2} (z'_i - z_i) \geq 0).
 	\end{align*}
+	From Lemma 4 from \cite{abbe2015exact},
+	$P(\sum_{i=1}^{n-2} (z'_i - z_i) \geq 0)$ is lower bounded by $n^{-(\sqrt{a} - \sqrt{b})^2 + o(1)}$.
+	Therefore, \eqref{eq:pa1} is obtained.
 \end{proof}
 \begin{lemma}\label{lem:p0p1}
 	Let $p_0,p_1$ be two probability distributions defined on alphabet $\mathcal{X}$,
 	then the following inequality holds
 	\begin{equation}\label{eq:32}
 		(\sum_{x\in \mathcal{X}} p^{\frac{1}{3}}_0(x) p^{\frac{2}{3}}_1(x))^3
-		\leq (\sum_{x\in \mathcal{X}} p^{\frac{1}{2}}_0(x) p^{\frac{1}{2}}_1(x))^2
+		\leq (\sum_{x\in \mathcal{X}} \sqrt{p_0(x) p_1(x)})^2
 	\end{equation}
 \end{lemma}
 \begin{proof}
@@ -418,8 +450,9 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	\eqref{eq:32}.
 \end{proof}
 \begin{proof}[Proof of Theorem \ref{thm:Pe}]
-Below we use Chernoff's inequality to give an upper bound of \eqref{eq:ein}:
-$P(A) \leq n^{-k\theta^*_k}$ where $\theta^*_k=\gamma D_{1/2}(p_0||p_1)+(1-\frac{2k}{n})(\sqrt{a}-\sqrt{b})^2$.
+Below we use Chernoff's inequality
+to give an upper bound of $P(A_k)$:
+$P(A_k) \leq n^{-k\theta^*_k}$ where $\theta^*_k=\gamma D_{1/2}(p_0||p_1)+(1-\frac{2k}{n})(\sqrt{a}-\sqrt{b})^2$.
 \begin{align*}
 &P(A_k) \leq \mathbb{E}
 \left[\exp \left( s\sum_{i=1}^{km}
@@ -467,7 +500,7 @@ By Bonferroni inequality,
 \begin{equation}\label{eq:bonf}
 	P(\bigcup_{1\leq i < j\leq n} A_{ij}) \geq
 	\sum_{1\leq i < j\leq n} P(A_{ij})
-	- \sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})		
+	- \sum_{(i,j) \neq (r,s)} P(A_{ij} \cap A_{rs})		
 \end{equation}
 To get the lower bound of $P(\cup_{1\leq i < j\leq n} A_{ij})$ by
 \eqref{eq:bonf},
@@ -484,7 +517,7 @@ $A_{ijrs}: \{p(x,z|y^{(1)})p(x,z|y^{(2)}) > p^2(x,z|y^*)\}$ where $y^{(1)}(y^{(2
 After taking the $\log$ on both sides and simplification,
 the inequality representation for the event $A_{ijrs}$ becomes \eqref{eq:ein}  with $k=2$.
 Therefore, $P(A_{ij} \cap A_{rs}) \leq n^{-2(\theta^*_2 + o(1))} $. The number of elements
-in the set $S_1:=\{(i,j,r,s)| (i,j)\neq (r,s), i<j, r<s\}$ is $\binom{n}{4} \leq n^4$.
+in the set $S_1:=\{(i,j,r,s)| i<j, r<s, |\{i,j,r,s\}|=4\}$ is $\binom{n}{4} \leq n^4$.
 Therefore, the probability sum
 $\sum_{(i,j,r,s) \in S_1} P(A_{ij} \cap A_{rs})
 \leq n^{-2\mu +o(1)}$,
@@ -523,7 +556,7 @@ P(A_{ijrs}) \leq n^{-\mu'/2-1-(\gamma  D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})
 $$
 where $\mu'=(\sqrt{a}-\sqrt{b})^2-2 
 - 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2>0$ from \eqref{eq:oneC}. 
-The set $S_2:=\{(i,j,r,s)| i=r \textrm{ or } j=s, (i,j)\neq (r,s) \}$
+The set $S_2:=\{(i,j,r,s)| i<j, r<s, |\{i,j,r,s\}|=3\}$
 has at most $n^3$ such terms,
 then the summation $\sum_{(i,j,r,s)\in S_2}
 P(A_{ij}\cap A_{rs}) \leq n^{-\mu'/2-\mu }$,
@@ -532,7 +565,7 @@ which has smaller order than $n^{-\mu}$.
 Based on the above discussion, 
 $\sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})\leq n^{-2\mu + o(1)}
 + n^{-\mu - \mu'/2} = o(1) n^{-\mu + o(1)}$.
-Then we conclude that $P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
+Then we conclude that $P_e=P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
 (1+o(1))n^{-\mu + o(1)}$.
 \end{proof}
 % \section{Proof of Theorem \ref{thm:ep}}
