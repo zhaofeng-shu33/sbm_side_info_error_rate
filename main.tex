@@ -72,9 +72,9 @@ different algorithms in experiment level.
 
 
 This paper is organized as follows. In Section \ref{s:rw}, we review the previous works which are related with ours.
-In Section \ref{s:model}, we introduce the model and present our main results.
-Then the article concludes in Section \ref{s:conclusion} and
-detailed proofs are provided in Section \ref{s:proof}.
+In Section \ref{s:model}, we introduce the mathematical model. Then in the following two sections,
+we present our error rate results for two different parameter regimes respectively.
+Finally the article concludes in Section \ref{s:conclusion}.
 
 The following notations are used throughout this paper: 
 the random undirected graph $G$ is written as $G(V,E)$ with vertex set $V$ and edge set $E$;
@@ -97,12 +97,18 @@ in \cite{abbe17sideinfo} and the exact recovery condition is obtained, which inv
 We emphasize that the SBM in Theorem 4 of \cite{abbe17sideinfo}
 assumes that the node labels are independently generated  from $\Bern(\frac{1}{2})$ while the model
 in this paper requires uniform distribution over the space $\sum_{i=1}^n Y_i = 0$ where $Y_i \in \{\pm 1 \}$ is the label of the $i$-th node.
-To distinguish the two models, we call the former SBM with equal probability and the latter the SBM with equal community size. The exact recovery condition of these two settings are equivalent but their error rate differs.
+%Currently we are able to obtain closed-form
+%error rate for the model with equal size constraint while the error rate for SBM with equal probability
+%remains open.
+To distinguish the two models, we call the former SBM with equal probability
+and the latter the SBM with equal community size.
+%The exact recovery condition of these two settings are equivalent but their error rate differs.
 
-In previous studies, the recovery condition is extensively studied, in which the error rate converges
+In previous researches of SBM, the recovery condition is extensively studied, in which the error rate converges
 to zero \cite{abbe2015exact}. 
-For SBM model with side information, we find the error rate of SBM with equal community size constraint allows close-form solution while SBM with
-equal probability does not have such good property.
+For SBM model with side information, we find the error rate of SBM with equal community size constraint allows close-form solution 
+in this paper while the error rate for SBM with
+equal probability remains an open problem.
 
 Rényi divergence has been used in SBM in \cite{zhang2016} to characterize the optimal error rate in weak
 recovery sense. Both the dense and sparse graph are considered. In this paper, we consider the optimal error rate in exact recovery metric and obtain similar results containing
@@ -118,13 +124,19 @@ The two-community symmetric stochastic block model (SSBM) is a special case of S
 		\item There is an edge of $G$ between the vertices $i$ and $j$ with probability $p$ if $Y_i=Y_j$ and with probability $q$ if $Y_i \neq Y_j$; the existence of each edge is independent with each other.
 	\end{enumerate}
 \end{definition}
+%In the above definition, we require the hard constraint $\sum_{i=1}^n Y_i=0$
+%to be satisfied.
+% There is another formulation, which assumes $Y_1, \dots, Y_n$ i.i.d. sampled
+%from $\Bern(\frac{1}{2})$. We call the former SSBM with equal community size while latter as SSBM with equal probability.
+%Without specific mention, the SSBM model mentioned in this paper is the former one.
 Sampling from SSBM, we can get a pair $(Y,G)$ where each feasible label $Y=y$ has probability $ 1/ \binom{n}{n/2}$.
 Within this probabilistic setting, the community detection task is to infer $Y$ from $G$.
 When
 additional node observations $X$ are added, we expect that better inference accuracy of $Y$ is achieved using $(Y,X)$.
 The additional node observation is called side information, and we define it formally in the following model:
 \begin{definition}[SBMSI]
-	Let $(Y,G)$ be sampled from $\SSBM(n,p,q)$, $X_{i1}, \dots, X_{im}$ are i.i.d. random variables for $i \in [n]$,
+	Let $(Y,G)$ be sampled from
+	$\SSBM(n,p,q)$, and $X_{i1}, \dots, X_{im}$ are i.i.d. random variables for $i \in [n]$,
 	whose probability density function $p(x)$ is determined by $Y_i$ as
 	\begin{equation}
 	p(x) = \begin{cases}
@@ -148,7 +160,9 @@ $Y$:
     s.t.\, & y_i \in \{\pm 1\}, \sum_{i=1}^n y_i=0 \label{eq:mle}
 \end{align}
 The estimator $\hat{Y}$, given by \eqref{eq:mle}, is a ML estimator in restricted parameter space.
-In contract, ML estimator for $y\in \{ \pm 1 \}^n$ (unrestricted parameter space) is considered in \cite{abbe17sideinfo} for SBM with equal probability.
+In contract,
+ML estimator for $y\in \{ \pm 1 \}^n$ (unrestricted parameter space)
+should be used for SBM with equal probability.
 To study the performance of the ML estimator, we need a metric of error rate,
 whose formal definition is given as:
 \begin{definition}[Error Rate of Exact Recovery for SBMSI]
@@ -173,15 +187,15 @@ This information theoretic quantity can be written as:
 \begin{equation}
 D_{1/2}(p_0 || p_1) = -2\log(\sum_{x \in \mathcal{X}} \sqrt{p_0(x)p_1(x)} )
 \end{equation}
-which is a special case for Rényi divergence between distribution $P$ and $Q$ of order $\alpha$: $D_{\alpha}(P||Q) = \frac{1}{\alpha - 1} \log \sum_{x\in \mathcal{X}} P^{\alpha}(x)Q^{1-\alpha}(x) $.
 
 With node observations, we divide our discussion into two cases:
 \begin{enumerate}
-\item $p,q$ are constant values;
-\item $p = a \log n /n$ and $q = b \log n / n$.
+	\item dense SBMSI: $p,q$ are constant values;
+\item sparse SBMSI: $p = a \log n /n$ and $q = b \log n / n$.
 \end{enumerate}
-The recovery error rate for the first case is given in Theorem \ref{thm:constant} while
-the latter case is analyzed in Theorem \ref{thm:Pe}.
+The recovery error rate for the first case is given in Section \ref{sec:ee} while
+the latter case is analyzed in Section \ref{sec:ees}.
+\section{Error Exponent for Dense SBMSI}\label{sec:ee}
 \begin{theorem}\label{thm:constant}
 	Let $\gamma = \frac{m}{n} = O(1)$. If $p,q$ are constant, using maximum likelihood estimator \eqref{eq:mle},
 	the error exponent of exact recovery is given by:
@@ -194,80 +208,33 @@ When $\gamma=0$, Theorem \ref{thm:constant} says $D_{1/2}(\Bern(p)||\Bern(q))$
 is the error exponent for exact recovery. Since weak recovery differs from exact recovery by a polynomial factor, $D_{1/2}(\Bern(p)||\Bern(q))$ is also the exponent for weak recovery, which has been obtained
 in \cite{zhang2016}.
 Besides, assuming $\gamma$ is an integer, the error exponent can be regarded as the Rényi divergence between the joint distribution
-$\underbrace{p_0\times p_0}_{\gamma} \times \Bern(p)$ and $p_1 \times \Bern(q)$. By independent conditions, we can decompose the
+$\underbrace{p_0\times \dots \times p_0}_{\gamma} \times \Bern(p)$ and $\underbrace{p_1\times \dots \times p_1}_{\gamma} \times \Bern(q)$. By independent conditions, we can decompose the
 divergence in the summation form.
 Furthermore, when $p,q$ are constant, for side information to take effects, the sample complexity $m$ should be of order $O(n)$. When $m=\omega(n)$, the side information dominates and the edge information is negligible.
 
-In the above we have discussed the dense graph while the result for the sparse graph
-is summarized
-in the following theorem:
-\begin{theorem}\label{thm:Pe}
-Let $\gamma = \frac{ m}{\log n}$ be a constant. If $p = a \log n /n$ and $q = b \log n / n$, using maximum likelihood estimator \eqref{eq:mle},
-if
-\begin{equation}\label{eq:positive_condition}
-\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 > 0
-\end{equation}
-then the error probability
-of exact recovery is bounded by
-\begin{equation}\label{eq:PeMain}
-P_e \leq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right) }
-\end{equation}
-If the following condition
-\begin{align}
-&(\sqrt{a}-\sqrt{b})^2-2 + 2\gamma \min \{D_{\frac{2}{3}}(p_0||p_1), D_{\frac{2}{3}}(p_1||p_0) \} \notag \\
-&> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2 + 2\gamma D_{1/2}(p_0||p_1)\label{eq:oneC}
-\end{align}
-is satisfied, then we can show that $P_e$ is lower bounded by
-\begin{equation}\label{eq:PeMainL}
-P_e \geq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right)}
-\end{equation}
-\end{theorem}
-Theorem \ref{thm:Pe} tells us that the side information $X$ accelerates the
-decreasing of error probability $P_e$ quantified by $\gamma D_{1/2}(p_0||p_1)$.
-Under certain parameter configurations specified in \eqref{eq:oneC},
-the quantity $\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2$
-exactly describes the error rate for the exact recovery problem of SBMSI.
-
-We mention that \eqref{eq:oneC} is satisfied when the difference between $a$ 
-and $b$ is large while the distribution $p_0$ is near to $p_1$. This makes the divergence
-smaller compared with the magnitude of $()$
-In addition, when $p_0=p_1$,
-Theorem \ref{thm:Pe} gives the error rate of maximum likelihood for SSBM. This corollary is
-summarized as follows:
-\begin{corollary}
-If the condition
-\begin{equation}
-(\sqrt{a}-\sqrt{b})^2-2 > 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2
-\end{equation}
-is satisfied,
- and we consider $\SSBM(n,\frac{a\log n}{n}, \frac{b \log n}{n})$. For ML algorithms, the exact recovery error rate $P_e$ satisfies
-\begin{equation}\label{eq:cor}
-\lim_{n\to \infty} \frac{\log P_e}{\log n} =2-(\sqrt{a} - \sqrt{b})^2
-\end{equation}
-\end{corollary}
-Using similar proof techniques, we can show that for SBM with equal probability, the error rate of ML is $n^{1-(\sqrt{a} - \sqrt{b})^2/2}$
-as long as $\sqrt{a} -\sqrt{b} > \sqrt{2}$,
-which converges slower than that given in \eqref{eq:cor}. This difference comes from whether we are considering a pair of nodes whose labels are wrongly
-classified or only a single node.
-
-
-\section{Analysis of Error Probability}\label{s:proof}
-Some additional notations are necessary in this Section: $|A|, A^c$ is the cardinality, complement of the set $A$;
-$D(p_0 || p_1)$ is the Kullback-Leibler divergence for distribution $p_0$ and $p_1$;
-$p_{B_q}(z) = q^z(1-q)^{1-z}$ is the probability mass distribution for $\Bern(q)$;
-From type theory, the set of possible types
-for $m$ samples with alphabet $\mathcal{X}$ is denoted as $\mathcal{P}_m$; For any $P\in \mathcal{P}_m$, the probability of the type
-class $T(P)$ under distribution $p_i$ is denoted as $Q_i^{m}(T(P))$.
 \subsection{Proof of Theorem \ref{thm:constant}}
-Let $Y=y^*$ be the ground truth.
-ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that there exists $y\neq y^*$ such that $p(x,z|y) > p(x,z|y^*)$	. Let $F_k$ denote
-the event when there are $k$ pairs difference between $y$ and $y^*$.
+We introduce some additional notations used throughout this proof. Let 
+$|A|, A^c$ be the cardinality, complement of the set $A$, respectively. For distributions $p_0$ and $p_1$,
+$D(p_0 || p_1)$ is the Kullback-Leibler divergence.
+ Let
+$p_{B_q}(z) = q^z(1-q)^{1-z}$ be the probability mass distribution for $\Bern(q)$.
+From type theory, the set of possible types
+for $m$ samples with alphabet $\mathcal{X}$ is denoted as $\mathcal{P}_m$. For any $P\in \mathcal{P}_m$, the probability of the type
+class $T(P)$ under distribution $p_i$ is denoted as $Q_i^{m}(T(P))$.
+
+Let us consider $P(\hat{Y}=Y|Y=y^*)$ for a certain labeling of nodes $y^*$.
+Since $Y$ is uniformly sampled, $P_e=P(\hat{Y}=Y|Y=y^*)$.
+The ML in \eqref{eq:mle} fails to exactly recover $y^*$ implies that
+there exists $y\neq y^*$ such that $p(x,z|y) > p(x,z|y^*)$.
+Let $F_k$ denote
+the event when there are $k$ pairs difference
+between $y$ and $y^*$.
 \begin{equation}\label{eq:Fk}
 F_k:=\{\exists y \in \{\pm 1\}^n | \dist(y, y^*)=2k, p(x,z|y) > p(x,z|y^*) \}
 \end{equation}
 Since
 $y$ is expected to satisfy the constraint $\sum_{i=1}^n y_i=0$, $\dist(y, y^*)$ is only allowed to take even
-values. Taking $\log$ on both sides of $p(x,z|y) > p(x,z|y^*)$ we can get the equivalent inequality:
+values. Taking logarithm on both sides of $p(x,z|y) > p(x,z|y^*)$, we get the equivalent inequality:
 
 \begin{equation}\label{eq:ein}
 \sum_{i=1}^{km} (\log \frac{p_1(x_{1i})}{p_0(x_{1i})}
@@ -291,11 +258,11 @@ and $\widetilde{Z}'$ is defined similarly. Then
 &[\sum_{z\in\{0,1\}} P_{\widetilde{Z}}(z) \log \frac{p_{B_q}(z)}{p_{B_p}(z)}
 + \sum_{z\in\{0,1\}} P_{\widetilde{Z}'}(z) \log \frac{p_{B_p}(z)}{p_{B_q}(z)}] \geq 0 \label{eq:mnk}
 \end{align}
-The probability of the event $A_k$ given by \eqref{eq:mnk} can be estimated by Sanov's theorem.
+When $p,q$ are constant, the probability of the event $A_k$ given by \eqref{eq:mnk} can be estimated by Sanov's theorem.
 $-\frac{1}{kn}\log P(A_k) \to \theta^*_k$ where 
 \begin{align*}
-\theta^*_k &= \min \gamma (D(\widetilde{X}_1||p_0) + D(\widetilde{X}_2||p_1)) + \\
-&(1-\frac{2k}{n})D(\widetilde{Z}||\Bern(p)) + D(\widetilde{Z}'||\Bern(q))  \\
+\theta^*_k &= \min \gamma (D(p_{\widetilde{X}_1}||p_0) + D(p_{\widetilde{X}_2}||p_1)) + \\
+&(1-\frac{2k}{n})D(p_{\widetilde{Z}}||\Bern(p)) + D(p_{\widetilde{Z}'}||\Bern(q))  \\
 & (\widetilde{X}_1, \widetilde{X}_2, \widetilde{Z}, \widetilde{Z}')
 \textrm{ satisfy } \eqref{eq:mnk}
 \end{align*}
@@ -320,7 +287,8 @@ and by $\binom{n}{k} \leq (ne/k)^k$, we can further bound $P_e$ above as follows
 P_e & \leq \sum_{k=1}^{n/4} \binom{n/2}{k}^2 P(A_k) \\
 & \leq \sum_{k=1}^{n/4} \exp(-nf(k))
 \end{align*}
-where $f(k) = \frac{2k}{n}\log \frac{2k}{ne} + k(C_1+C_2) - \frac{2k^2}{n}C_2$.
+where
+$f(k) = \frac{2k}{n}\log \frac{2k}{ne} + k(C_1+C_2) - \frac{2k^2}{n}C_2$.
 By computing $f'(x)= \frac{2}{n} \log \frac{2x}{n} + C_1+C_2 - \frac{4C_2x}{n}$, $1\leq x \leq \frac{n}{4}$.
 $f'(1) > 0 , f'(\frac{n}{4}) > 0 \Rightarrow f'(x) > 0$ for $1\leq x \leq \frac{n}{4}$.
 Therefore, $f(x)$ increases in the interval $[1, \frac{n}{4}]$, and $f(k) \geq f(1)$ for $1\leq k \leq \frac{n}{4}$.
@@ -328,12 +296,87 @@ Therefore, $f(x)$ increases in the interval $[1, \frac{n}{4}]$, and $f(k) \geq f
 P_e \leq \frac{n}{4}\exp(-nf(1)) = \exp(-n (C_1+C_2+o(1)))
 \end{equation}
 On the other hand $P_e \geq P(A_1) = \exp(-n(C_1+C_2+o(1)))$.
-Finally we have $-\frac{1}{n} \lim_{n \to \infty} \log P_e = C_1+C_2$.
+Finally we have
+$-\frac{1}{n} \lim_{n \to \infty} \log P_e = C_1+C_2$,
+and the proof of Theorem \ref{thm:constant} is completed.
+
+\section{Error Rate for Sparse SBMSI}\label{sec:ees}
+In Section \ref{sec:ee} we discussed the exponential error rate for dense SBMSI.
+In this section, we will present the polynomial error rate for sparse SBMSI.
+This result is summarized in the following theorem:
+\begin{theorem}\label{thm:Pe}
+Let $\gamma = \frac{ m}{\log n}$ be a constant. If $p = a \log n /n$ and $q = b \log n / n$, using maximum likelihood estimator \eqref{eq:mle},
+if
+\begin{equation}\label{eq:positive_condition}
+\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 > 0
+\end{equation}
+then the error probability
+of exact recovery is bounded by
+\begin{equation}\label{eq:PeMain}
+P_e \leq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right) }
+\end{equation}
+If the following condition
+\begin{align}
+(\sqrt{a}-\sqrt{b})^2-2 
+> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2\label{eq:oneC}
+\end{align}
+is satisfied, then we can show that $P_e$ is lower bounded by
+\begin{equation}\label{eq:PeMainL}
+P_e \geq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right)}
+\end{equation}
+\end{theorem}
+Theorem \ref{thm:Pe} tells us that the side information $X$ increased the
+decay rate of error probability $P_e$ quantified by $\gamma D_{1/2}(p_0||p_1)$.
+Under some parameter configurations specified in \eqref{eq:oneC},
+the quantity $\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2$
+exactly describes the error rate for the exact recovery problem of SBMSI.
+
+We notice that when \eqref{eq:oneC} is satisfied,
+so is \eqref{eq:positive_condition}. In such case, the error
+rate is given by
+$$
+-\lim_{n\to \infty} \frac{\log P_e}{\log n}
+= \gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2
+$$
+To obtain this error rate,
+we need a slightly stronger condition \eqref{eq:oneC}
+than the recovery threshold $\sqrt{a}-\sqrt{b} > \sqrt{2}$
+for SSBM.
+
+In addition, when $p_0=p_1$,
+Theorem \ref{thm:Pe} gives the error rate of maximum likelihood for SSBM. This corollary is
+summarized as follows:
+\begin{corollary}\label{cor:sbm}
+Consider $\SSBM(n,\frac{a\log n}{n}, \frac{b \log n}{n})$ with equal community size.
+For ML algorithms, the exact recovery error rate $P_e$ satisfies \textcolor{red}{(less than or equal?) Theorem 2 is an upper bound on error probability}
+\begin{equation}\label{eq:cor}
+\lim_{n\to \infty} \frac{\log P_e}{\log n} =2-(\sqrt{a} - \sqrt{b})^2
+\end{equation}
+as long as \eqref{eq:oneC} holds.
+\end{corollary}
+% As a side product of our proof techniques, we have also obtained the error rate
+% for SSBM with equal probability, which is summarized as follows:
+% \begin{theorem}\label{thm:ep}
+% 	For $\SSBM(n,\frac{a\log n}{n}, \frac{b \log n}{n})$ with equal probability, if $\sqrt{a} -\sqrt{b} > \sqrt{2}$,
+% 	the exact recovery error rate $P_e$ satisfies
+% 	\begin{equation}
+% 		\lim_{n\to \infty} \frac{\log P_e}{\log n} =2-(\sqrt{a} - \sqrt{b})^2		
+% 	\end{equation}
+% \end{theorem}
+% Comparing Theorem \ref{thm:ep} with Corollary \ref{cor:sbm},
+% we see that $P_e$ for SSBm with equal probability converges slower than that of the model with equal community size.
+% This difference comes from whether we are considering a pair of nodes whose labels are wrongly
+% classified or only a single node. This difference can also
+% be understood as whether we are searching from $2^n$ valid states
+% or only from $\binom{n}{2}$ states.
+
 \subsection{Proof of Theorem \ref{thm:Pe}}
-Before the proof of Theorem \ref{thm:Pe}, we introduce the following lemma, which gives the lower bound
-of $P(A_1)$ for sparse graph.
+We start from \eqref{eq:mnk} to get the upper and lower bounds for $P_e$.
+Firstly, we introduce the following lemma, which gives the lower bound
+of $P(A_1)$ when $p,q=O(\frac{\log n}{n})$.
 \begin{lemma}\label{lem:single_lower}
-For event $E$ specified in \eqref{eq:ein} with $k=1$, the following estimation holds
+For event $E$ specified in \eqref{eq:ein} with $k=1$,
+we have the following estimation
 \begin{equation}
 P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n )
 \end{equation}
@@ -355,14 +398,37 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	& = \exp(-\log n (\gamma D_{1/2}(P_0||P_1) + (\sqrt{a} - \sqrt{b})^2+ o(1))).
 	\end{align*}
 \end{proof}
+\begin{lemma}\label{lem:p0p1}
+	Let $p_0,p_1$ be two probability distributions defined on alphabet $\mathcal{X}$,
+	then the following inequality holds
+	\begin{equation}\label{eq:32}
+		(\sum_{x\in \mathcal{X}} p^{\frac{1}{3}}_0(x) p^{\frac{2}{3}}_1(x))^3
+		\leq (\sum_{x\in \mathcal{X}} p^{\frac{1}{2}}_0(x) p^{\frac{1}{2}}_1(x))^2
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	Let $f(x)=p^{\frac{1}{3}}_0(x)p^{\frac{1}{3}}_1(x)$, $g(x) = p^{\frac{1}{3}}_1(x)$,
+	$p=\frac{3}{2}, q=3$. We can verify $\frac{1}{p} + \frac{1}{q}=1$.
+	By Hölder's inequality:
+	\begin{equation}\label{eq:holder}
+		(\sum_{x\in\mathcal{X}}f(x)g(x))\leq (\sum_{x\in\mathcal{X}} f^p(x))^{\frac{1}{p}}
+		(\sum_{x\in\mathcal{X}} g^q(x))^{\frac{1}{q}}
+	\end{equation}
+	Since $\sum_{x\in\mathcal{X}} p_1(x)=1$, \eqref{eq:holder} implies
+	\eqref{eq:32}.
+\end{proof}
 \begin{proof}[Proof of Theorem \ref{thm:Pe}]
-Below we use Chernoff inequality to give an upper bound of \eqref{eq:ein}:
+Below we use Chernoff's inequality to give an upper bound of \eqref{eq:ein}:
 $P(A) \leq n^{-k\theta^*_k}$ where $\theta^*_k=\gamma D_{1/2}(p_0||p_1)+(1-\frac{2k}{n})(\sqrt{a}-\sqrt{b})^2$.
 \begin{align*}
-&P(A_k) \leq \mathbb{E}[\exp \left( s\sum_{i=1}^{km}
+&P(A_k) \leq \mathbb{E}
+\left[\exp \left( s\sum_{i=1}^{km}
 \left( \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
-+ \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \right) \right)]\\
-& \cdot \mathbb{E}[\exp\left(s\log \frac{a}{b}\sum_{i=1}^{k(n-2k)} (z'_i - z_i )\right)] \\
++ \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \right)
+\right)\right]\\
+& \cdot \mathbb{E}
+\left[\exp\left(s\log \frac{a}{b}\sum_{i=1}^{k(n-2k)} (z'_i - z_i )\right)
+\right] \\
 & \stackrel{(a)}{=} (\sum_{x\in \mathcal{X}} p_0^{1-s}(x)p_1^{s}(x))^{km} (\sum_{x\in \mathcal{X}} p_1^{1-s}(x)p_0^{s}(x))^{km}\\
 &   \cdot \exp(k\log n (1-\frac{2k}{n})(-a-b+a^sb^{1-s}+b^sa^{1-s} +o(1)) )
 \end{align*}
@@ -376,7 +442,10 @@ is analyzed using \eqref{eq:FAk}.
 &P_e \leq (1+o(1))\sum_{k=1}^{\frac{n}{\sqrt{\log n}}} P(F_k) \leq (1+o(1))\\
 & \cdot \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k(-\mu \log n + \frac{2k}{n} \log n(\sqrt{a} - \sqrt{b})^2 - 2\log 2k + 2))
 \end{align*}
-where $\mu = (\sqrt{a} - \sqrt{b})^2-2 + \gamma D_{1/2}(p_0||p_1) > 0$.
+where $\mu$ is defined as
+\begin{equation}\label{eq:mu_def}
+	\mu = (\sqrt{a} - \sqrt{b})^2-2 + \gamma D_{1/2}(p_0||p_1) > 0	
+\end{equation}
 Using the inequality
 $$
 \frac{2k}{n}(\sqrt{a} - \sqrt{b})^2\log n -2\log2k+2\leq  C\sqrt{\log n}
@@ -388,30 +457,54 @@ P_e &\leq(1+o(1)) \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k((-\mu + o(1)) \log
 \end{align*}
 Therefore, \eqref{eq:PeMain} is established.
 
-To prove the lower bound \eqref{eq:PeMainL}, we first
-define the event $A_{ij}$ as $\{p(x,z|y) > p(x,z|y^*),y_s=-y^*_s, s=i,j \textrm{ and } \dist(y,y^*)=2  \}$.
+To prove the lower bound \eqref{eq:PeMainL},
+we first define the event $A_{ij}$ as
+$p(x,z|y) > p(x,z|y^*)$ where $y$ is defined as
+$y_s=-y^*_s, s=i,j$ and $y_s=y^*_s$ otherwise.
+
 It follows that $\cup_{1\leq i < j\leq n} A_{ij} \subset F$ where $F$ denotes the event when ML fails to recover the community labels exactly.
 By Bonferroni inequality,
-$P(\cup_{1\leq i < j\leq n} A_{ij}) \geq \sum_{1\leq i < j\leq n} P(A_{ij}) - \sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})$.
-We first deal with $P(A_{ij})$. Notice that $A_{ij}$ is equivalent with \eqref{eq:ein} for $k=1$. By Lemma \ref{lem:single_lower}, $P(A_{ij})$ is lower bounded by $n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$. Since $|\{1\leq i < j\leq n\}|=\binom{n}{2}$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{2}n^{-\mu+o(1)}$.
-Next we give upper bound of $P(A_{ij} \cap A_{rs})$ according to two cases.
+\begin{equation}\label{eq:bonf}
+	P(\bigcup_{1\leq i < j\leq n} A_{ij}) \geq
+	\sum_{1\leq i < j\leq n} P(A_{ij})
+	- \sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})		
+\end{equation}
+To get the lower bound of $P(\cup_{1\leq i < j\leq n} A_{ij})$ by
+\eqref{eq:bonf},
+we need a lower bound for the first term and an upper bound for
+the second term.
+We first deal with $P(A_{ij})$.
+Notice that the event $A_{ij}$
+is equivalent with \eqref{eq:ein} for $k=1$.
+By Lemma \ref{lem:single_lower}, $P(A_{ij})$ is lower bounded by $n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$. Since $|\{1\leq i < j\leq n\}|=\binom{n}{2}$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{2}n^{-\mu+o(1)}$.
+Next we give the upper bound of $P(A_{ij} \cap A_{rs})$ according to two cases.
+
 First is the case when $|\{i,j,r,s\}|=4$. Then $A_{ij} \cap A_{rs}$ implies the event
 $A_{ijrs}: \{p(x,z|y^{(1)})p(x,z|y^{(2)}) > p^2(x,z|y^*)\}$ where $y^{(1)}(y^{(2)})$ differs from $y^*$ at position $i,j(r,s)$.
-After taking the $\log$ on both sides and simplification, the inequality in $A_{ijrs}$ becomes \eqref{eq:ein}  with $k=2$.
-Therefore, $P(A_{ij} \cap A_{rs}) \leq n^{-2(\theta^*_2 + o(1))} $. There are
-$\binom{n}{4} \leq n^4$ terms. Therefore, the probability sum
-is bounded by $n^{-2\mu +o(1)}$, which has smaller order than $n^{-\mu+o(1)}$ since $\mu > 0$.
+After taking the $\log$ on both sides and simplification,
+the inequality representation for the event $A_{ijrs}$ becomes \eqref{eq:ein}  with $k=2$.
+Therefore, $P(A_{ij} \cap A_{rs}) \leq n^{-2(\theta^*_2 + o(1))} $. The number of elements
+in the set $S_1:=\{(i,j,r,s)| (i,j)\neq (r,s), i<j, r<s\}$ is $\binom{n}{4} \leq n^4$.
+Therefore, the probability sum
+$\sum_{(i,j,r,s) \in S_1} P(A_{ij} \cap A_{rs})
+\leq n^{-2\mu +o(1)}$,
+which has smaller order than $n^{-\mu+o(1)}$ since $\mu > 0$.
 
-Another case happens when $|\{i,j,r,s\}|=3$. Under such case, we first suppose $i=r, y^{(1)}_i = y^{(2)}_r = 1$, then
+Another case happens when $|\{i,j,r,s\}|=3$. Under such case, without loss of generality we can assume $i=r, y^{(1)}_i = y^{(2)}_r = 1$.
+For the case $y^{(1)}_i = y^{(2)}_r = -1$, we only need to exchange
+$p_0$ and $p_1$, and the following analysis is still valid.
+then
 \begin{align}
 A_{ijrs}: &\, 2\sum_{i=1}^m  \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
 + \sum_{i=1}^{2m} \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \\
 & +\log\frac{a}{b}\left(
 \sum_{i=1}^{n} (z'_i - z_i) + 2\sum_{i=n+1}^{3n/2} (z'_i - z_i)\right)  \geq 0\notag
 \end{align}
-Using Chernoff inequality, we can write an upper bound of $P(A_{ijrs})$ as
+Using Chernoff's inequality, we can write an upper bound of $P(A_{ijrs})$ as
 \begin{align*}
-&P(A_{ijrs}) \leq  (\sum_{x\in \mathcal{X}} p_0^{1-2s}p_1^{2s})^m (\sum_{x\in \mathcal{X}} p_1^{1-s}p_0^{s})^{2m} \cdot \\
+&P(A_{ijrs}) \leq
+(\sum_{x\in \mathcal{X}} p_0^{1-2s}p_1^{2s})^m
+(\sum_{x\in \mathcal{X}} p_1^{1-s}p_0^{s})^{2m} \cdot \\
 &\exp(\log n (-\frac{3}{2}(a+b)+a\exp(-s\log \frac{a}{b})+b\exp(s\log \frac{a}{b}) \\
 &+ \frac{a}{2}\exp(-2s\log \frac{a}{b})+\frac{b}{2}\exp(2s\log \frac{a}{b})))
 \end{align*}
@@ -419,29 +512,41 @@ Let $s=\frac{1}{3}$. We then have
 \begin{align*}
 P(A_{ijrs})\leq & (\sum_{x\in \mathcal{X}} p_0^{1/3}(x)p_1^{2/3}(x))^{3m}\\
 & \cdot \exp(\frac{3}{2}\log n (-a-b+a^{1/3}b^{2/3}+a^{2/3}b^{1/3})) \\
-=&  \exp(-\log n(\gamma D_{2/3}(p_1 || p_0) \\
+\leq &  \exp(-\log n(\gamma D_{1/2}(p_1 || p_0) \\
 &+ \frac{3}{2} (a+b-a^{1/3}b^{2/3}-a^{2/3}b^{1/3})))
 \end{align*}
+where the last inequality follows from Lemma \ref{lem:p0p1}.
 From the condition mentioned in \eqref{eq:oneC},
 it follows that
 $$
 P(A_{ijrs}) \leq n^{-\mu'/2-1-(\gamma  D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2)}
 $$
-where $\mu'>0$ is the difference of two sides in \eqref{eq:oneC}. 
-There are at most $n^3$ such terms, then the summation is bounded by
-$n^{-\mu'/2-\mu }$,
+where $\mu'=(\sqrt{a}-\sqrt{b})^2-2 
+- 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2>0$ from \eqref{eq:oneC}. 
+The set $S_2:=\{(i,j,r,s)| i=r \textrm{ or } j=s, (i,j)\neq (r,s) \}$
+has at most $n^3$ such terms,
+then the summation $\sum_{(i,j,r,s)\in S_2}
+P(A_{ij}\cap A_{rs}) \leq n^{-\mu'/2-\mu }$,
 which has smaller order than $n^{-\mu}$.
 
-If $i=r, y^{(1)}_i = y^{(2)}_r = -1$, similar deduction can be made, and $D_{2/3}(p_0||p_1)$ is used
-instead.
-We conclude that $P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
+Based on the above discussion, 
+$\sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})\leq n^{-2\mu + o(1)}
++ n^{-\mu - \mu'/2} = o(1) n^{-\mu + o(1)}$.
+Then we conclude that $P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
 (1+o(1))n^{-\mu + o(1)}$.
 \end{proof}
+% \section{Proof of Theorem \ref{thm:ep}}
+% For SBM with equality probability, we need to drop the equality constraint for the ML estimator in \ref{eq:mle}.
+% Following similar steps as in the proof of Theorem \ref{thm:Pe},
+% we consider a series of event $A_k$ which represents certain
+% $k$ nodes are wrongly classified.
 \section{Conclusion}\label{s:conclusion}
 In this paper, we obtain the optimal error rate in the sense of exact recovery for a two-community SBM with side information. Our result
 shows that the detection error can be characterized by Rényi divergence and the parameters of SBM. To control the recovery error within a given level,
-our result shares insight on sample complexities of node features.
-
+our result shares insight on
+the necessary number of features and nodes.
+Whether the condition \eqref{eq:oneC} for the error rate can be relaxed
+will be considered in future study.
 \bibliographystyle{IEEEtran}
 \bibliography{exportlist}
 \end{document}
