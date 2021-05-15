@@ -45,7 +45,7 @@
     Side information improves the accuracy in community detection problems.
     While experimental results demonstrate the superior performance of many detection methods
     based on both the node attributes and graph structure, the question of the fundamental limit of the error rate for exact recovery remains open.
-    In this paper, we obtain asymptotic optimal error rate in the sense of 
+    In this paper, we obtain the asymptotic optimal error rate in the sense of 
     exact recovery for a special two-community symmetric stochastic block model (SSBM) with side information consisting of multiple features.
     Our result provides insight on the number of features and nodes in the graph needed for community detection.
 \end{abstract}
@@ -58,16 +58,16 @@ accuracy can be achieved for community detection problems. Within this context, 
 is to investigate the gain that the extra information brings to the detection problem, compared to the case where only edge observation is available.
 
 	% first paragraph: short intro to SBM 
-To get theoretical insight into such a problem, it is often assumed that the graph is generated from a simple probabilistic model called Stochastic Block Model (SBM), in which the probability of edge existence is higher within the community than that between different communities \cite{holland1983stochastic}. For the sole presence of SBM, as the size of community grows, the error rate of many algorithms decreases to zero in both the exact recovery and weak recovery metric \cite{yun2014accurate,fei2019achieving}. For the special case of a two-community model,
+To get theoretical insights into such a problem, it is often assumed that the graph is generated from a simple probabilistic model called Stochastic Block Model (SBM), in which the probability of edge existence is higher within the community than that between different communities \cite{holland1983stochastic}. For the sole presence of SBM, as the size of community grows, the error rate of many algorithms decreases to zero in both the exact recovery and weak recovery metric \cite{yun2014accurate,fei2019achieving}. For the special case of a two-community model,
 the optimal error rate for weak recovery has been obtained as $n^{-(\sqrt{a} - \sqrt{b})^2/2}$ where $a,b$ are parameters of SBM \cite{zhang2016}.
 
 With the presence of extra node information, the condition of exact recovery is improved
 and generalized \cite{saad2018community}. However, previous study does not exactly quantify the optimal error rate of SBM with side information. This paper will fill the gap by considering a model of two-community SBM with extra node feature vectors. We have obtained that
-the exact recovery error decreases polynomially in a rate $\gamma D_{1/2}(p_0 || p_1) + (\sqrt{a} - \sqrt{b})^2 -2$
-where the contribution of side information is coded in Rényi divergence.
-The optimal error rate on the extended model is achieved by maximum likelihood method, which is only theoretically justified and can not be applied directly in practical problems without approximation. For many other implementable algorithms like variants of SDP relaxation and
+the exact recovery error decreases polynomially in a rate quantified by $\gamma D_{1/2}(p_0 || p_1) + (\sqrt{a} - \sqrt{b})^2 -2$. In this expression,
+the contribution of side information to the error rate is coded in Rényi divergence.
+The optimal error rate on the extended model is achieved by maximum likelihood method, which is theoretically justified but can not be applied directly in practical problems without approximation. For many other implementable algorithms like variants of SDP relaxation and
 spectral clustering, their error rate decreases to zero but may not achieve the fundamental limit given in this paper. Nevertheless, the study of optimal error rate provides a unified way to compare
-different algorithms in experiment level.
+different algorithms in the experiment level.
 
 
 
@@ -156,7 +156,7 @@ where $p(z|y)$ is the likelihood function for $\SSBM$ and $\sigma_i = (1+y_i)/2$
 Based on \eqref{eq:lh}, we can use the maximum likelihood (ML) method to estimate
 $Y$:
 \begin{align}
-    \hat{Y} &= \arg\max_y p(x,z|Y=y) \notag \\
+    \hat{Y} &= \argmax_y p(x,z|Y=y) \notag \\
     s.t.\, & y_i \in \{\pm 1\}, \sum_{i=1}^n y_i=0 \label{eq:mle}
 \end{align}
 The estimator $\hat{Y}$, given by \eqref{eq:mle}, is a ML estimator in restricted parameter space.
@@ -385,7 +385,7 @@ P(E) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log n 
 	When $k=1$, the left-hand side of \eqref{eq:ein} can be rewritten as $P(\sum_{i=1}^{n-2} (z'_i - z_i) \geq \epsilon)$
 	where
 	\begin{align*}
-	\epsilon\triangleq&\frac{m}{\log a/b}\cdot [(D(P_{\widetilde{X}^{1}} || P_1) - D(P_{\widetilde{X}^{1}} || P_0)) \\
+	\epsilon := &\frac{m}{\log a/b}\cdot [(D(P_{\widetilde{X}^{1}} || P_1) - D(P_{\widetilde{X}^{1}} || P_0)) \\
 	&+(D(P_{\widetilde{X}^{2}} || P_0) - D(P_{\widetilde{X}^{2}} || P_1))],
 	\end{align*}
 	Let $P_{\widetilde{X}^{i_1}}$ and $P_{\widetilde{X}^{i_2}}$ follow the distribution
