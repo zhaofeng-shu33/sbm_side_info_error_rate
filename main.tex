@@ -335,7 +335,7 @@ if
 then the error probability
 of exact recovery is bounded by
 \begin{equation}\label{eq:PeMain}
-P_e \leq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right) }
+P_e \leq (\frac{1}{4}+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right) }
 \end{equation}
 If the following condition
 \begin{align}
@@ -344,7 +344,7 @@ If the following condition
 \end{align}
 is satisfied, then we can show that $P_e$ is lower bounded by
 \begin{equation}\label{eq:PeMainL}
-P_e \geq (1+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right)}
+P_e \geq (\frac{1}{4}+o(1)) n^{-\left(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2 + o(1)\right)}
 \end{equation}
 \end{theorem}
 Theorem \ref{thm:Pe} tells us that the side information $X$ increased the
@@ -469,11 +469,12 @@ where $(a)$ follows from independence condition. Choosing $s=\frac{1}{2}$ we the
 $P(A_k) \leq  n^{-k(\theta^*_k+o(1))}$.
 
 When $k \geq \frac{n}{\sqrt{\log n}}$, using Lemma 8 of \cite{feng2021},
-$P(F_k)$ decreases exponentially. The error probability for $k < \frac{n}{\sqrt{\log n}}$
+$P(F_k)$ decreases exponentially. The error probability for $2\leq k < \frac{n}{\sqrt{\log n}}$
 is analyzed using \eqref{eq:FAk}.
 \begin{align*}
-&P_e \leq (1+o(1))\sum_{k=1}^{\frac{n}{\sqrt{\log n}}} P(F_k) \leq (1+o(1))\\
-& \cdot \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k(-\mu \log n + \frac{2k}{n} \log n(\sqrt{a} - \sqrt{b})^2 - 2\log 2k + 2))
+&P_e \leq P(F_1)+(1+o(1))\sum_{k=2}^{\frac{n}{\sqrt{\log n}}} P(F_k) \leq (1+o(1))\\
+& \cdot \sum_{k=2}^{\frac{n}{\sqrt{\log n}}}
+\exp(k(-\mu \log n + \frac{2k}{n} \log n(\sqrt{a} - \sqrt{b})^2 - 2\log 2k + 2))
 \end{align*}
 where $\mu$ is defined as
 \begin{equation}\label{eq:mu_def}
@@ -483,10 +484,10 @@ Using the inequality
 $$
 \frac{2k}{n}(\sqrt{a} - \sqrt{b})^2\log n -2\log2k+2\leq  C\sqrt{\log n}
 $$
-for $1\leq k \leq \frac{n}{\sqrt{\log n}}$, we can obtain
+for $2\leq k \leq \frac{n}{\sqrt{\log n}}$, we can obtain
 \begin{align*}
-P_e &\leq(1+o(1)) \sum_{k=1}^{\frac{n}{\sqrt{\log n}}} \exp(k((-\mu + o(1)) \log n )) \\
-& =(1+o(1)) \frac{n^{-\mu + o(1)}}{1-n^{-\mu + o(1)}} = (1+o(1))n^{-\mu + o(1)}
+P_e &\leq \frac{1}{4}n^{-\mu + o(1)} +(1+o(1)) \sum_{k=2}^{\frac{n}{\sqrt{\log n}}} \exp(k((-\mu + o(1)) \log n )) \\
+& =\frac{1}{4}n^{-\mu + o(1)}+(1+o(1)) \frac{n^{-\mu + o(1)}}{1-n^{-\mu + o(1)}} = (\frac{1}{4}+o(1))n^{-\mu + o(1)}
 \end{align*}
 Therefore, \eqref{eq:PeMain} is established.
 
@@ -502,14 +503,18 @@ By Bonferroni inequality,
 	\sum_{1\leq i < j\leq n} P(A_{ij})
 	- \sum_{(i,j) \neq (r,s)} P(A_{ij} \cap A_{rs})		
 \end{equation}
-To get the lower bound of $P(\cup_{1\leq i < j\leq n} A_{ij})$ by
+To get the lower bound of
+$P(\cup_{1\leq i < j\leq n} A_{ij})$ by
 \eqref{eq:bonf},
 we need a lower bound for the first term and an upper bound for
 the second term.
 We first deal with $P(A_{ij})$.
-Notice that the event $A_{ij}$
-is equivalent with \eqref{eq:ein} for $k=1$.
-By Lemma \ref{lem:single_lower}, $P(A_{ij})$ is lower bounded by $n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$. Since $|\{1\leq i < j\leq n\}|=\binom{n}{2}$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{2}n^{-\mu+o(1)}$.
+Notice that the single event $A_{ij}$
+is equivalent with $A_1$.
+By Lemma \ref{lem:single_lower},
+$P(A_{ij})$ is lower bounded by
+$n^{-\gamma D_{1/2}(p_0 || p_1)-(\sqrt{a} - \sqrt{b})^2 +o(1)}$.
+Since $|\{1\leq i < j\leq n, y^*_i=-y^*_j\}|=(n/2)^2$, the term $\sum_{1\leq i < j\leq n} P(A_{ij})$ is of order $\frac{1}{4}n^{-\mu+o(1)}$.
 Next we give the upper bound of $P(A_{ij} \cap A_{rs})$ according to two cases.
 
 First is the case when $|\{i,j,r,s\}|=4$. Then $A_{ij} \cap A_{rs}$ implies the event
@@ -566,7 +571,7 @@ Based on the above discussion,
 $\sum_{(i,j) < (r,s) } P(A_{ij} \cap A_{rs})\leq n^{-2\mu + o(1)}
 + n^{-\mu - \mu'/2} = o(1) n^{-\mu + o(1)}$.
 Then we conclude that $P_e=P(F) \geq P(\cup_{1\leq i < j\leq n} A_{ij}) \geq
-(1+o(1))n^{-\mu + o(1)}$.
+(\frac{1}{4}+o(1))n^{-\mu + o(1)}$.
 \end{proof}
 % \section{Proof of Theorem \ref{thm:ep}}
 % For SBM with equality probability, we need to drop the equality constraint for the ML estimator in \ref{eq:mle}.
