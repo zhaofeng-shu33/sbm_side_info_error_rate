@@ -40,6 +40,7 @@ numberstyle=\tiny\color{mygray}
 	\tableofcontents
 \end{frame}
 \section{Background}
+\subsection{Community Detection}
 \begin{frame}{Community Detection}
 	\begin{columns}
 		\column{0.5\textwidth}
@@ -79,6 +80,7 @@ numberstyle=\tiny\color{mygray}
 	\end{block}
 	\end{columns}
 \end{frame}
+\subsection{Stochastic Block Model}
 \begin{frame}{Binary Symmetric Stochastic Block Model}
 	\begin{block}{Characteristics}
 		\begin{itemize}
@@ -122,6 +124,7 @@ numberstyle=\tiny\color{mygray}
 	 exist ?
 	\end{block}
 \end{frame}
+\subsection{Related Works}
 \begin{frame}{Related Works}
 	% must mention the work of concurrent submission and explain
 	% the difference between the two
@@ -146,7 +149,7 @@ numberstyle=\tiny\color{mygray}
 \frametitle{Binary Symmetric SBM with Side Information}
 \begin{block}{Characteristics of SBMSI}
 \begin{itemize}
-	\item   Each node includes multiple additional observations with
+	\item   Each node includes $m$ additional observations with
 	finite-cardinality alphabet.
 	\begin{equation*}
 		x_{i1}, x_{i2}, \dots, x_{im} \in \{1, 2, \dots, |\mathcal{X}|\}
@@ -166,197 +169,68 @@ numberstyle=\tiny\color{mygray}
 
 \end{frame}
 \begin{frame}\frametitle{Exact Recovery Error Rate}
-Paired hypothesis testing problem:
-\begin{equation*}
-\begin{cases}
-H_0: X \sim P_0=(P \times Q)\\
-H_1: X \sim P_1=(Q \times P)
-\end{cases}
-\end{equation*}
+\begin{block}{Maximum Likelihood}
 \begin{itemize}
-\item Random variable $X=(X_1, X_2)$: $X_1 \sim P, X_2 \sim Q, X_1 \independent X_2$
-\item Chernoff information for optimal test $\widehat{H}$
-\begin{align*}
-&-\lim_{n\to\infty} \frac{1}{n}\log P_e = -\min_{\lambda \in [0,1]}
-\log \sum_{x,y\in \mathcal{X}}
-P^{1-\lambda}_0(x,y) P^{\lambda}_1(x,y)  \\
-&= -\min_{\lambda \in [0,1]}
-\left(\log \sum_{x\in \mathcal{X}}
-P^{1-\lambda}(x) Q^{\lambda}(x) 
-+\log \sum_{y\in \mathcal{X}}
-Q^{1-\lambda}(y) P^{\lambda}(y) 
-\right)
-\end{align*}
-\item $\lambda=\frac{1}{2}$: minimizer
+	\item Theoretically Optimal Recovery Method
+	\begin{align*}
+		\hat{Y} &= \arg\max_y\ \Pr(x,G|Y=y) \notag \\
+		\textrm{s.t.} \ & y_i \in \{\pm 1\}, \sum_{i=1}^n y_i=0 \label{eq:mle}
+	\end{align*}
+	\item Achieves the optimal error rate $P_e=P(\hat{Y} \neq Y)$
 \end{itemize}
-\end{frame}
-\begin{frame}
-Paired hypothesis testing problem:
+\end{block}
+Recall: Rényi divergence with order $\frac{1}{2}$:
 \begin{equation*}
-\begin{cases}
-H_0: X \sim P_0=(P \times Q)\\
-H_1: X \sim P_1=(Q \times P)
-\end{cases}
-\end{equation*}
-Chernoff information for optimal test $\widehat{H}$
-\begin{equation*}
--\lim_{n\to \infty} \frac{1}{n}\log P_e = -2 \log \sum_{x\in \mathcal{X}} \sqrt{P(x)Q(x)}
-\end{equation*}
-Rényi divergence with order $\frac{1}{2}$
-\begin{equation*}
-D_{1/2}(P||Q) := -2 \log \sum_{x\in \mathcal{X}} \sqrt{P(x)Q(x)}
+	D_{1/2}(p_0 || p_1) = -2\log(\sum_{x \in \mathcal{X}} \sqrt{p_0(x)p_1(x)} )
 \end{equation*}
 \end{frame}
-\section{Sketch of Proof}
-\begin{frame}
-\frametitle{
-Stochastic Block Model} A probabilistic model to generate random graph
-\begin{itemize}
-\item $Y_i$: label for the $i$-th node
-\item $X_{ij}=1$: an edge exists between node $i$ and $j$
-\end{itemize}
-Procedures:
+\section{Main Results}
+\begin{frame}{Optimal Error Rate for SBMSI}
 \begin{enumerate}
-\item Generate $Y_1, \dots, Y_n$ uniformly from $\{\pm 1\}^n$
-\item Make sure $\sum_{i=1}^n Y_i = 0$
-\item $X_{ij} \sim \Bern(p) $ if $Y_i=Y_j$
-\item $X_{ij} \sim \Bern(q) $ if $Y_i \neq Y_j$
+	\item Sparse Case: $\gamma=\frac{m}{n}, p, q$ are constants
+		\begin{equation*}
+		-\lim_{n\to \infty} \frac{1}{n}\log P_e =  \gamma D_{1/2}(p_0 || p_1) + D_{1/2}(\Bern(p)||\Bern(q))
+		\end{equation*}
+	\item Dense Case: $\gamma=\frac{m}{ \log n},
+	a=\frac{np}{\log n}, b=\frac{np}{\log n}$ are constants
+		\begin{equation*}\label{eq:PeMainL}
+		-\lim_{n\to \infty}\frac{\log P_e}{\log n}=\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2
+		\end{equation*}
+		as long as
+		\begin{align*}
+			(\sqrt{a}-\sqrt{b})^2-2 
+			> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2\label{eq:oneC}
+		\end{align*}	
 \end{enumerate}
-Misclassfication of label of one node
-\begin{itemize}
-\item $Y_3, \dots, Y_n$ are given, satisfying $Y_3 + \dots + Y_n  = 0$
-\item What's the error rate of the optimal estimator for $Y_1$ and $Y_2$?
-\end{itemize}
 \end{frame}
 \begin{frame}
-\frametitle{
-Hypothesis Testing in Stochastic Block Model} 
-Paired hypothesis testing problem:
-\begin{equation*}
-\begin{cases}
-H_0: Y_1 = 1 \textrm{ and } Y_2 = -1 \iff X \sim \Bern(p) \times \Bern(q)\\
-H_1: Y_1 = -1 \textrm{ and } Y_2 = 1 \iff X \sim \Bern(q) \times \Bern(p)
-\end{cases}
-\end{equation*}
-\begin{itemize}
-\item $n-1$ i.i.d.  observations of $X$
-\item Chernoff information for optimal test $\widehat{H}$
-\begin{equation*}
--\lim_{n\to\infty} \frac{1}{n}\log P_e = -2 \log (\sqrt{pq}+\sqrt{(1-p)(1-q)})
-\end{equation*}
-\item What if $p,q$ varies with $n$?
-\end{itemize}
-\end{frame}
-\begin{frame}
-\begin{theorem}[Cramér Theorem]
-$X_1, \dots, X_n  \textrm{ i.i.d.} \sim P$, $\gamma > \mathbb{E}[X_1]$, 
-\begin{equation*}
--\lim_{n\to \infty}\frac{1}{n} \log P\left(\frac{X_1+ \dots + X_n}{n} > \gamma \right)
-= \psi_P^*(\gamma)
-\end{equation*}
-\end{theorem}
-Chernoff Information
-\begin{itemize}
-\item $X, X_1, \dots, X_n \textrm{ i.i.d.} \sim P_0$
-\item $\ell(X) = \log\frac{P_1(X)}{P_0(X)} \sim P$
-\end{itemize}
-\begin{equation*}
--\lim_{n\to\infty} \frac{1}{n}\log P_e = \psi^*_P(0)
-\end{equation*}
-\end{frame}
-\begin{frame}
-\begin{theorem}[Gärtner Ellis Theorem]
-$X, X_1, \dots, X_n  \textrm{ i.i.d.} \sim P_n$, $\gamma > \lim_{n\to\infty} \frac{n}{\gamma_n}\mathbb{E}[X_1]$, 
-\begin{equation*}
--\lim_{n\to \infty}\frac{1}{\textcolor{red}{\gamma_n}} \log P\left(\frac{X_1+ \dots + X_n}{\textcolor{red}{\gamma_n}} > \gamma \right)
-= \psi_P^*(\gamma)
-\end{equation*}
-\begin{itemize}
-\item $\lim_{n\to\infty} \gamma_n = +\infty$
-\item Distribution $P_n$ depends on $n$
-\item log-MGF: $\psi_P(\lambda)=\lim_{n\to\infty} \frac{n}{\gamma_n} \log \mathbb{E}[e^{\lambda X}]$
-\end{itemize}
-\end{theorem}
-Chernoff Information
-\begin{itemize}
-\item $X, X_1, \dots, X_n \textrm{ i.i.d.} \sim P_{0,n}$
-\item $\ell(X) = \log\frac{P_{1,n}(X)}{P_{0,n}(X)} \sim P_n$
-\end{itemize}
-\begin{equation*}
--\lim_{n\to\infty} \frac{1}{\textcolor{red}{\gamma_n}}\log P_e = \psi^*_P(0)
-%=-\min_{\lambda\in[0,1]}\log [\textcolor{red}{\lim_{n\to\infty}\frac{n}{\gamma_n}} \sum_{x\in \mathcal{X}} P_{0,n}^{1-\lambda}(x)P_{1,n}^{\lambda}(x)]
-\end{equation*}
-\end{frame}
-% \begin{frame}\frametitle{Hypothesis Testing}
-% Paired hypothesis testing problem:
-% \begin{equation*}
-% \begin{cases}
-% H_0: X \sim P_{0,n}=(P_n \times Q_n)\\
-% H_1: X \sim P_{1,n}=(Q_n \times P_n)
-% \end{cases}
-% \end{equation*}
-% Random variable $X=(X_1, X_2)$: $X_1 \sim P_n, X_2 \sim Q_n, X_1 \independent X_2$
+\frametitle{Discussion of Main Results}
+\begin{enumerate}
+	\item SBM with no side information: $\gamma = 0$, $P_e$ decays like $n^{2-(\sqrt{a} - \sqrt{b})^2}$
+	\item Connection with Hypothesis Testing Problem and Gärtner Ellis Theorem
+	\item Can we remove the additional condition?
+	$(\sqrt{a}-\sqrt{b})^2-2 
+	> 3a^{1/3}b^{1/3}(a^{1/6}-b^{1/6})^2$
+	% This condition is used to control the error
+	% of two pairs is smaller than that of one pair in order.
+	\item Main results different from the phase transition solution,
+	which is the Chernoff information
+	between $\textrm{Pois}(\frac{a}{2},\frac{b}{2})\times P_0$ and $\textrm{Pois}(\frac{b}{2}, \frac{a}{2})\times P_1$
+	[Asadi-Abbe-Verdú,2017]
+\end{enumerate}
 
-% Chernoff information for optimal test $\widehat{H}$
-% \begin{align*}
-% &-\lim_{n\to\infty} \frac{1}{\gamma_n}\log P_e = -\min_{\lambda \in [0,1]}
-% \log[\lim_{n\to\infty}\frac{n}{\gamma_n} \sum_{x,y\in \mathcal{X}}
-% P^{1-\lambda}_{0,n}(x,y) P^{\lambda}_{1,n}(x,y) ] \\
-% &=  -\min_{\lambda \in [0,1]}
-% \log[\lim_{n\to\infty}\frac{n}{\gamma_n} \left((\sum_{x\in \mathcal{X}}
-% P^{1-\lambda}_{n}(x) Q^{\lambda}_{n}(x)) \cdot
-% (\sum_{y\in \mathcal{X}}
-% Q^{1-\lambda}_{n}(y) P^{\lambda}_{n}(y)\right) ]
-% \end{align*}
-% \end{frame}
-\begin{frame}
-\frametitle{
-Stochastic Block Model}
-\begin{itemize}
-\item $Y_i$: label for the $i$-th node
-\item $X_{ij}=1$: an edge exists between node $i$ and $j$
-\item $\color{red}  p_n=\frac{a \log n}{n}, q_n =\frac{b \log n}{n} $
-\end{itemize}
-Procedures:
-\begin{enumerate}
-\item Generate $Y_1, \dots, Y_n$ uniformly from $\{\pm 1\}^n$
-\item Make sure $\sum_{i=1}^n Y_i = 0$
-\item $X_{ij} \sim \Bern(\textcolor{red} {p_n} ) $ if $Y_i=Y_j$
-\item $X_{ij} \sim \Bern(\textcolor{red}{q_n} ) $ if $Y_i \neq Y_j$
-\end{enumerate}
-Misclassfication of label of one node
-\begin{itemize}
-\item $Y_3, \dots, Y_n$ are given, satisfying $Y_3 + \dots + Y_n  = 0$
-\item What's the error rate of the optimal estimator for $Y_1$ and $Y_2$?
-\end{itemize}
 \end{frame}
-\begin{frame}
-\frametitle{
-Hypothesis Testing in Stochastic Block Model} 
-Paired hypothesis testing problem:
-\begin{equation*}
-\begin{cases}
-H_0: Y_1 = 1 \textrm{ and } Y_2 = -1 \iff X \sim P_{0,n} = \Bern(p_n) \times \Bern(q_n)\\
-H_1: Y_1 = -1 \textrm{ and } Y_2 = 1 \iff X \sim P_{1,n} = \Bern(q_n) \times \Bern(p_n)
-\end{cases}
-\end{equation*}
-Choose $\gamma_n = \log n$
-\begin{align*}
-\psi_P(\lambda) &= \lim_{n\to \infty} \frac{n}{\log n} \log E_{P_{0,n}} [e^{\lambda \ell(X)}]\\
-&=a^{1-\lambda}b^{\lambda}
-+a^{\lambda}b^{1-\lambda} -a-b
-\end{align*}
-Polynomial error rate
-\begin{equation*}
--\lim_{n\to\infty} \frac{1}{\log n}\log P_e = -\min_{\lambda} \psi_P(\lambda) = (\sqrt{a}-\sqrt{b})^2
-\end{equation*}
-\end{frame}
+%\section{Sketch of Proof}
+
 \section{Conclusion}
 \begin{frame}
 \frametitle{Conclusion}
 \begin{itemize}
-\item In paired hypothesis testing, Chernoff information $\Rightarrow$ Rényi divergence with order $\frac{1}{2}$
-\item Gärtner Ellis Theorem generalizes Cramér Theorem, allowing the derivation of polynomial error rate
+\item The detection error can be
+characterized by Rényi divergence and the parameters of SBM
+\item Our result provides insight on the
+number of features and nodes needed for community
+detection task.
 \end{itemize}
 \end{frame}
 
