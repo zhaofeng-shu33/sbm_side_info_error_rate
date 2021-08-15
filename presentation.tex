@@ -1,6 +1,6 @@
 \documentclass{beamer}
-%\usetheme[secheader]{Lab2C}
-\usetheme{Lab2C} % disable pgf drawing to speed up compilation in development
+\usetheme[secheader]{Lab2C}
+%\usetheme{Lab2C} % disable pgf drawing to speed up compilation in development
 \usepackage{graphicx}
 \usepackage{array}
 \usepackage{subcaption}
@@ -171,7 +171,7 @@ numberstyle=\tiny\color{mygray}
 \begin{frame}\frametitle{Exact Recovery Error Rate}
 \begin{block}{Maximum Likelihood}
 \begin{itemize}
-	\item Theoretically Optimal Recovery Method
+	\item Theoretically optimal recovery method
 	\begin{align*}
 		\hat{Y} &= \arg\max_y\ \Pr(x,G|Y=y) \notag \\
 		\textrm{s.t.} \ & y_i \in \{\pm 1\}, \sum_{i=1}^n y_i=0 \label{eq:mle}
@@ -187,11 +187,11 @@ Recall: Rényi divergence with order $\frac{1}{2}$:
 \section{Main Results}
 \begin{frame}{Optimal Error Rate for SBMSI}
 \begin{enumerate}
-	\item Sparse Case: $\gamma=\frac{m}{n}, p, q$ are constants
+	\item Dense Case: $\gamma=\frac{m}{n}, p, q$ are constants
 		\begin{equation*}
 		-\lim_{n\to \infty} \frac{1}{n}\log P_e =  \gamma D_{1/2}(p_0 || p_1) + D_{1/2}(\Bern(p)||\Bern(q))
 		\end{equation*}
-	\item Dense Case: $\gamma=\frac{m}{ \log n},
+	\item Sparse Case: $\gamma=\frac{m}{ \log n},
 	a=\frac{np}{\log n}, b=\frac{np}{\log n}$ are constants
 		\begin{equation*}\label{eq:PeMainL}
 		-\lim_{n\to \infty}\frac{\log P_e}{\log n}=\gamma D_{1/2}(p_0||p_1) + (\sqrt{a} - \sqrt{b})^2-2
