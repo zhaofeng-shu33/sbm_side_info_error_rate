@@ -408,20 +408,27 @@ P(A_1) \geq \exp(-(\gamma D_{1/2}(p_0||p_1) + (\sqrt{a}-\sqrt{b})^2 + o(1))\log 
 	$\sum_{i=1}^{n-2} (z'_i - z_i) \geq \epsilon$
 	where
 	\begin{align*}
-	\epsilon := &\frac{m}{\log a/b}\cdot \Bigl[D(P_{\widetilde{X}^{1}} || P_1) - D(P_{\widetilde{X}^{1}} || P_0) \\
-	&+D(P_{\widetilde{X}^{2}} || P_0) - D(P_{\widetilde{X}^{2}} || P_1)\Bigr],
+	\epsilon := &\frac{m}{\log a/b}\cdot \Bigl[D(P_{\widetilde{X}_{1}} || P_1) - D(P_{\widetilde{X}_{1}} || P_0) \\
+	&+D(P_{\widetilde{X}_{2}} || P_0) - D(P_{\widetilde{X}_{2}} || P_1)\Bigr],
 	\end{align*}
-	Let $P_{\widetilde{X}^{i_1}}$ and $P_{\widetilde{X}^{i_2}}$ follow the distribution
-	$P(X=x)=\frac{\sqrt{p_0(x)p_1(x)}}{ \sum_{x\in \mathcal{X}} \sqrt{p_0(x) p_1(x)}} $
+	Let $P_{\widetilde{X}^{*}_1}$
+	and $P_{\widetilde{X}^{*}_2}$
+	follow the distribution
+	$P(X=x)=\frac{\sqrt{P_0(x)P_1(x)}}
+	{ \sum_{x\in \mathcal{X}}
+	\sqrt{P_0(x) P_1(x)}} $
 	, which makes $\epsilon =0$.
 	For this special choice of distribution
-	$P_{\widetilde{X}^{i_1}}$ and $P_{\widetilde{X}^{i_2}}$,
+	$P_{\widetilde{X}^{*}_1}$
+	and $P_{\widetilde{X}^{*}_2}$,
 	using Sanov's theorem, we have that
 	\begin{align*}
 	&P(A_1)
 	\geq\frac{1}
 	{(m+1)^{2|\mathcal{X}|}}
-	\exp(-m(D(p_{\widetilde{X}_1} || p_0) + D(p_{\widetilde{X}_2} || p_1))\\
+	\exp(-m(D(p_{\widetilde{X}^*_1} || P_0)
+	+ D(p_{\widetilde{X}^*_2} || P_1))
+	\\
 	&\quad\cdot P\left(\sum_{i=1}^{n-2} (z'_i - z_i) \geq 0\right)\\
 	& = \exp(-\log n (\gamma D_{1/2}(P_0||P_1)+o(1))) P(\sum_{i=1}^{n-2} (z'_i - z_i) \geq 0).
 	\end{align*}
