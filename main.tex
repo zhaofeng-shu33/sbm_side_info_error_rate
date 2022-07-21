@@ -549,7 +549,7 @@ For the case $y^{(1)}_i = y^{(2)}_r = -1$, we only need to exchange
 $p_0$ and $p_1$, and the following analysis is still valid.
 Then
 \begin{align}
-A_{ijrs}: &\, 2\sum_{i=1}^m  \log \frac{p_1(x_{1i})}{p_0(x_{2i})}
+A_{ijrs}: &\, 2\sum_{i=1}^m  \log \frac{p_1(x_{1i})}{p_0(x_{1i})}
 + \sum_{i=1}^{2m} \log \frac{p_0(x_{2i})}{p_1(x_{2i})} \\
 & +\log\frac{a}{b}\left(
 \sum_{i=1}^{n} (z'_i - z_i) + 2\sum_{i=n+1}^{3n/2} (z'_i - z_i)\right)  \geq 0\notag
@@ -583,7 +583,7 @@ P(A_{ij}\cap A_{rs}) \leq n^{-\mu'/2-\mu+o(1)}$,
 which has smaller order than $n^{-\mu+o(1)}$.
 
 Based on the above discussion, 
-$\sum_{(i,j,r,s)\in S_2} P(A_{ij} \cap A_{rs})\leq n^{-2\mu + o(1)}
+$\sum_{(i,j,r,s)\in S} P(A_{ij} \cap A_{rs})\leq n^{-2\mu + o(1)}
 + n^{-\mu - \mu'/2} = o(1) n^{-\mu + o(1)}$.
 Then we conclude that 
 \begin{align*}
